@@ -13,7 +13,7 @@ public class StaticImports {
         String apiKey = ConfigReader.getValue("postman.api.key");
         given()
                 .baseUri(baseUrl)
-                .header("x-api-key", apiKey)
+                .header("x-api-key",apiKey)
                 .when()
                 .get("/workspaces")
                 .then()
