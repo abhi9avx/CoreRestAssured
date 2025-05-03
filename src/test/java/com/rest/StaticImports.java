@@ -1,5 +1,6 @@
 package com.rest;
 
+import com.utils.ConfigReader;
 import org.testng.annotations.Test;
 import static io.restassured.RestAssured.*;
 import static org.hamcrest.Matchers.*;
@@ -8,9 +9,11 @@ public class StaticImports {
 
     @Test
     public void testStaticImports() {
+        String baseUrl = ConfigReader.getValue("base.url");
+        String apiKey = ConfigReader.getValue("postman.api.key");
         given()
-                .baseUri("https://api.getpostman.com")
-                .header("x-api-key", "POSTMAN_API_KEY")
+                .baseUri(baseUrl)
+                .header("x-api-key", apiKey)
                 .when()
                 .get("/workspaces")
                 .then()

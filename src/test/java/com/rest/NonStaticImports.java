@@ -1,17 +1,22 @@
 package com.rest;
 
+import com.utils.ConfigReader;
 import io.restassured.RestAssured;
 import org.testng.annotations.Test;
+
+
 import static org.hamcrest.Matchers.equalTo;
 
 public class NonStaticImports {
 
     @Test
     public void testNonStaticImports() {
+        String baseUrl = ConfigReader.getValue("base.url");
+        String apiKey = ConfigReader.getValue("postman.api.key");
         RestAssured
                 .given()
-                .baseUri("https://api.getpostman.com")
-                .header("x-api-key", "POSTMAN_API_KEY")
+                .baseUri(baseUrl)
+                .header("x-api-key", apiKey)
                 .when()
                 .get("/workspaces")
                 .then()
