@@ -1,6 +1,7 @@
 package com.rest;
 
 import com.utils.ConfigReader;
+import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
 import org.apache.http.conn.util.PublicSuffixList;
 import org.testng.annotations.BeforeClass;
@@ -49,6 +50,25 @@ public class AutomateGet {
 
         System.out.println("Response: " + res.asString());
     }
+    @Test
+    public void extract_single_value_from_response(){
+        Response res = given()
+                .baseUri(baseUrl)
+                .header("x-api-key", apiKey)
+                .when()
+                .get("/workspaces")
+                .then()
+                .assertThat()
+                .statusCode(200)
+                .extract()
+                .response();
+
+        JsonPath jsonPath = new JsonPath(res.asString());
+        System.out.println("workspaces name: " + jsonPath.getString("workspaces[0].name"));
+        System.out.println("workspaces name: " + res.path("workspaces[0].type"));
+
+
+    }
 
 }
 
@@ -91,3 +111,8 @@ public class AutomateGet {
 //	•	Sends the same GET request as test case 1.
 //	•	Uses .extract().response() to capture the response.
 //	•	System.out.println(res.asString()) prints the raw JSON response to the console.
+
+//✅ Test Case 3: extract_single_value_from_response():
+//	•	Extract a specific value from a JSON response.
+//	•	Use both JsonPath and Response.path() for accessing nested fields.
+//	•	Understand which method to use depending on the use case (JsonPath for parsing complex structures, .path() for simpler access).
