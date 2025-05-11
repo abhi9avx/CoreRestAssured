@@ -10,6 +10,7 @@ import org.testng.annotations.Test;
 
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.*;
 
 public class AutomateGet {
 
@@ -88,6 +89,32 @@ public class AutomateGet {
         Assert.assertEquals(name,"My Workspace");
     }
 
+    @Test
+    public void hamcrest_assertions_inside_body() {
+        given()
+                .baseUri(baseUrl)
+                .header("x-api-key", apiKey)
+                .when()
+                .get("/workspaces")
+                .then()
+                .assertThat()
+                .statusCode(200)
+
+                // ✅ Validate size of workspaces list
+                .body("workspaces", hasSize(1))
+
+                // ✅ Validate workspace name is exactly "My Workspace"
+                .body("workspaces[0].name", equalTo("My Workspace"))
+
+                // ✅ Validate workspace names list is not empty
+                .body("workspaces.name", not(empty()))
+
+                // ✅ Validate workspace names list contains specific value
+                .body("workspaces.name", hasItem("My Workspace"))
+
+                // ✅ Validate all workspace names are non-null
+                .body("workspaces.name", everyItem(notNullValue()));
+    }
 }
 
 
@@ -140,3 +167,17 @@ public class AutomateGet {
 //	•	Extract a field directly from response using .path().
 //	•	Use TestNG assertions (Assert.assertEquals) for clear pass/fail results.
 //	•	Combine REST Assured’s fluent syntax with custom validation logic.
+
+//✅Test Case 5: hamcrest_assertions_inside_body() Test Case
+//	1.	Hamcrest Integration with REST Assured:
+//	•	Learned how to use Hamcrest matchers directly inside the .body() method to perform fluent, readable, and expressive validations on API responses.
+//	2.	Validating Response List:
+//	•	Used hasSize(n) to assert the number of items in the workspaces list.
+//	•	Used not(empty()) to ensure the list isn’t empty.
+//	3.	Validating Specific Field Values:
+//	•	Validated a specific field’s value using equalTo().
+//	•	Checked presence of an expected item in a list using hasItem().
+//	4.	Null-Safety and Data Quality:
+//	•	Ensured all workspace names are non-null with everyItem(notNullValue()).
+//	5.	Clean Assertion Style:
+//	•	Applied a concise, declarative style that avoids manual extraction, making tests easier to write, read, and maintain.
