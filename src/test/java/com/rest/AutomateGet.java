@@ -4,6 +4,7 @@ import com.utils.ConfigReader;
 import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
 import org.apache.http.conn.util.PublicSuffixList;
+import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
@@ -70,6 +71,23 @@ public class AutomateGet {
 
     }
 
+    @Test
+    public void hamcrest_assert_on_extracted_response(){
+        String name = given()
+                .baseUri(baseUrl)
+                .header("x-api-key", apiKey)
+                .when()
+                .get("/workspaces")
+                .then()
+                .assertThat()
+                .statusCode(200)
+                .extract()
+                .response().path("workspaces[0].name");
+        System.out.println("workspaces name: " + name);
+
+        Assert.assertEquals(name,"My Workspace");
+    }
+
 }
 
 
@@ -116,3 +134,9 @@ public class AutomateGet {
 //	•	Extract a specific value from a JSON response.
 //	•	Use both JsonPath and Response.path() for accessing nested fields.
 //	•	Understand which method to use depending on the use case (JsonPath for parsing complex structures, .path() for simpler access).
+
+//✅Test Case 4: hamcrest_assert_on_extracted_response() :
+//	•	Learned how to:
+//	•	Extract a field directly from response using .path().
+//	•	Use TestNG assertions (Assert.assertEquals) for clear pass/fail results.
+//	•	Combine REST Assured’s fluent syntax with custom validation logic.
