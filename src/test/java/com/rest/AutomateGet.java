@@ -8,7 +8,9 @@ import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
+import static io.restassured.RestAssured.config;
 import static io.restassured.RestAssured.given;
+import static io.restassured.config.LogConfig.logConfig;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.*;
 
@@ -115,6 +117,47 @@ public class AutomateGet {
                 // ✅ Validate all workspace names are non-null
                 .body("workspaces.name", everyItem(notNullValue()));
     }
+
+    @Test
+    public void request_response_logging() {
+        given()
+                .baseUri(baseUrl)
+                .header("x-api-key", apiKey)
+
+                // ✅ Log full request details: headers, params, body, method, URI
+                .log().method()
+                .log().uri()
+                .log().headers()
+                .log().params()
+                .log().body()
+
+                .when()
+                .get("/workspaces")
+
+                .then()
+
+                // ✅ Log full response body and status line
+                .log().status()
+                .log().body()
+
+                // ✅ Log only if there's an error (e.g., statusCode != 200)
+                .log().ifError()
+
+                .statusCode(200);
+    }
+
+    @Test
+    public void masked_logging_example() {
+        given()
+                .baseUri(baseUrl)
+                .header("x-api-key", apiKey)
+                .config(config().logConfig(logConfig().blacklistHeader("x-api-key"))) // 👈 blacklists sensitive header
+                .log().all()
+                .when()
+                .get("/workspaces")
+                .then()
+                .statusCode(200);
+    }
 }
 
 
@@ -181,3 +224,32 @@ public class AutomateGet {
 //	•	Ensured all workspace names are non-null with everyItem(notNullValue()).
 //	5.	Clean Assertion Style:
 //	•	Applied a concise, declarative style that avoids manual extraction, making tests easier to write, read, and maintain.
+
+
+//🔍 Available Logging Options in REST Assured:
+//.log() Method
+//Description
+//.log().all()
+//Logs everything: request + response
+//.log().method()
+//Logs the HTTP method (GET, POST, etc.)
+//.log().uri()
+//Logs the full request URI
+//.log().headers()
+//Logs request headers
+//.log().params()
+//Logs query/form parameters
+//.log().body()
+//Logs request or response body
+//.log().status()
+//Logs the HTTP response status line
+//.log().ifError()
+//Logs only if validation fails or status code is not 2xx
+
+//🔒 blacklistHeader("x-api-key")
+//
+//This tells REST Assured to hide or mask that header when logging, so it won’t expose secrets in logs.
+//
+//🛡️ Why use it?
+//	•	Prevents leaking API keys, tokens, auth headers, etc. in console or CI logs.
+//	•	Very useful for security & compliance in teams and open environments.
