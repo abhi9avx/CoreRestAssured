@@ -87,4 +87,21 @@ public class RequestParameters {
                 .statusCode(200);
 
     }
+
+    @Test
+    public void multipart_form_data_example() {
+        given()
+                .baseUri("https://postman-echo.com")
+                .multiPart("foo1", "bar1")
+                .multiPart("foo2", "bar2")
+                .log().all()
+                .when()
+                .post("/post")
+                .then()
+                .log().all()
+                .assertThat()
+                .statusCode(200)
+                .body("form.foo1", equalTo("bar1"))// Validate the form data in the response
+                .body("form.foo2", equalTo("bar2")); // Validate the form data in the response
+    }
 }
