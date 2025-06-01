@@ -12,31 +12,27 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
 import java.io.File;
+import java.util.HashMap;
 
 import static io.restassured.RestAssured.given;
-import static io.restassured.RestAssured.with;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.matchesPattern;
 
 /**
- * This class demonstrates how to automate a POST request using both
- * BDD and non-BDD styles with Rest Assured.
- * It validates workspace creation on the Postman API.
+ * This class demonstrates how to automate POST requests using Rest Assured.
+ * Covers: BDD style, Non-BDD style, and Map-based payload for workspace creation.
  */
 public class AutomatePost {
 
-    /**
-     * Setup method runs once before all tests.
-     * Initializes base URI, headers, and logging using request and response specifications.
-     */
+    private ResponseSpecification responseSpec;
+
     @BeforeClass
     public void setup() {
-        // Load config values from properties file
         String baseUrl = ConfigReader.getValue("base.url");
         String apiKey = ConfigReader.getValue("postman.api.key");
 
-        // Build request specification for all requests
+        // Common request specification
         RestAssured.requestSpecification = new RequestSpecBuilder()
                 .setBaseUri(baseUrl)
                 .addHeader("X-Api-Key", apiKey)
@@ -44,24 +40,23 @@ public class AutomatePost {
                 .log(LogDetail.ALL)
                 .build();
 
-        // Build response specification to expect 200 status and JSON content
-        ResponseSpecBuilder responseSpecBuilder = new ResponseSpecBuilder()
+        // Common response specification
+        responseSpec = new ResponseSpecBuilder()
                 .expectStatusCode(200)
                 .expectContentType(ContentType.JSON)
-                .log(LogDetail.ALL);
+                .log(LogDetail.ALL)
+                .build();
 
-        RestAssured.responseSpecification = responseSpecBuilder.build();
+        RestAssured.responseSpecification = responseSpec;
     }
 
     /**
-     * Test to validate POST request using BDD Style (Given-When-Then).
-     * This style improves readability and works well for test reporting.
+     * BDD-style test to validate workspace creation using a JSON file.
      */
     @Test
-    public void validatePostRequestBDDStyle() {
+    public void validatePostRequest_BDD_Style() {
         File file = new File("src/main/resources/CreateWorkspacePayload.json");
 
-        // BDD-style POST request with inline validation
         given()
                 .body(file)
                 .when()
@@ -69,15 +64,14 @@ public class AutomatePost {
                 .then()
                 .assertThat()
                 .body("workspace.name", equalTo("MyFirstWorkSpace5"))
-                .body("workspace.id", matchesPattern("^[a-z0-9-]+$")); // Workspace ID pattern validation
+                .body("workspace.id", matchesPattern("^[a-z0-9-]+$")); // Workspace ID format
     }
 
     /**
-     * Test to validate POST request using Non-BDD Style (imperative approach).
-     * This style gives more control over response handling and logic branching.
+     * Non-BDD style test to validate workspace creation using a string payload.
      */
     @Test
-    public void validatePostRequestNonBDDStyle() {
+    public void validatePostRequest_NonBDD_Style() {
         String payload = "{\n" +
                 "    \"workspace\": {\n" +
                 "        \"name\": \"MyFirstWorkSpace\",\n" +
@@ -87,16 +81,41 @@ public class AutomatePost {
                 "    }\n" +
                 "}";
 
-        // Non-BDD style: send request and extract response object
-        Response response = with()
+        Response response = given()
                 .body(payload)
                 .post("/workspaces");
 
-        // Extract values and assert manually
         assertThat("Workspace name should match",
                 response.path("workspace.name"), equalTo("MyFirstWorkSpace"));
 
         assertThat("Workspace ID should match expected pattern",
                 response.path("workspace.id"), matchesPattern("^[a-z0-9-]+$"));
     }
+
+    /**
+     * BDD-style test to create a workspace using a HashMap as payload.
+     */
+    @Test
+    public void validatePostRequest_UsingMapPayload() {
+        HashMap<String, Object> mainObject = new HashMap<>();
+        HashMap<String, String> workspaceDetails = new HashMap<>();
+
+        workspaceDetails.put("name", "MyFirstWorkSpace6");
+        workspaceDetails.put("type", "personal");
+        workspaceDetails.put("description", "Rest Assured Created this");
+        workspaceDetails.put("visibility", "personal");
+
+        mainObject.put("workspace", workspaceDetails);
+
+        given()
+                .body(mainObject)
+                .when()
+                .post("/workspaces")
+                .then()
+                .log().all()
+                .assertThat()
+                .body("workspace.name", equalTo("MyFirstWorkSpace6"))
+                .body("workspace.id", matchesPattern("^[a-z0-9-]+$"));
+    }
+
 }
