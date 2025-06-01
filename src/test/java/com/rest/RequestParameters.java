@@ -57,4 +57,19 @@ public class RequestParameters {
                 .body("args.foo5", equalTo("bar5"))
                 .body("args.foo6", equalTo("bar6"));
     }
+
+    @Test
+    public void testMultipleValueQueryParameters() {
+        given()
+                .baseUri(BASE_URI)
+                .queryParam("foo", "bar1"," bar2", "bar3")
+
+                .log().all()
+                .when()
+                .get("/get")
+                .then()
+                .log().all()
+                .assertThat()
+                .statusCode(200);
+    }
 }
