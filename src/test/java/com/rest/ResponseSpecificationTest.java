@@ -3,6 +3,7 @@ package com.rest;
 import com.utils.ConfigReader;
 import io.restassured.RestAssured;
 import io.restassured.builder.RequestSpecBuilder;
+import io.restassured.builder.ResponseSpecBuilder;
 import io.restassured.filter.log.LogDetail;
 import io.restassured.http.ContentType;
 import io.restassured.specification.ResponseSpecification;
@@ -40,10 +41,17 @@ public class ResponseSpecificationTest {
         // Assign request spec to RestAssured globally
         RestAssured.requestSpecification = requestSpecBuilder.build();
 
-        // Build the expected response specification
-        responseSpec = expect()
-                .statusCode(200) // Expect HTTP status code 200
-                .contentType(ContentType.JSON); // Expect JSON response
+//        // Build the expected response specification
+//        responseSpec = expect()
+//                .statusCode(200) // Expect HTTP status code 200
+//                .contentType(ContentType.JSON); // Expect JSON response
+
+        ResponseSpecBuilder responseSpecBuilder = new ResponseSpecBuilder()
+                .expectStatusCode(200)
+                .expectContentType(ContentType.JSON)
+                .log(LogDetail.ALL);
+
+        responseSpec = responseSpecBuilder.build(); // ✅ Correct assignment
     }
 
     @Test
