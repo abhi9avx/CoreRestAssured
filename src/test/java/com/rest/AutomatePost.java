@@ -11,6 +11,8 @@ import io.restassured.specification.ResponseSpecification;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
+import java.io.File;
+
 import static io.restassured.RestAssured.given;
 import static io.restassured.RestAssured.with;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -57,23 +59,16 @@ public class AutomatePost {
      */
     @Test
     public void validatePostRequestBDDStyle() {
-        String payload = "{\n" +
-                "    \"workspace\": {\n" +
-                "        \"name\": \"MyFirstWorkSpace\",\n" +
-                "        \"type\": \"personal\",\n" +
-                "        \"description\": \"Rest Assured Created this\",\n" +
-                "        \"visibility\": \"personal\"\n" +
-                "    }\n" +
-                "}";
+        File file = new File("src/main/resources/CreateWorkspacePayload.json");
 
         // BDD-style POST request with inline validation
         given()
-                .body(payload)
+                .body(file)
                 .when()
                 .post("/workspaces")
                 .then()
                 .assertThat()
-                .body("workspace.name", equalTo("MyFirstWorkSpace"))
+                .body("workspace.name", equalTo("MyFirstWorkSpace5"))
                 .body("workspace.id", matchesPattern("^[a-z0-9-]+$")); // Workspace ID pattern validation
     }
 
