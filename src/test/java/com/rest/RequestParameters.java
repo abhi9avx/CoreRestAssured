@@ -3,6 +3,7 @@ package com.rest;
 import io.restassured.RestAssured;
 import org.testng.annotations.Test;
 
+import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -91,7 +92,7 @@ public class RequestParameters {
     @Test
     public void multipart_form_data_example() {
         given()
-                .baseUri("https://postman-echo.com")
+                .baseUri(BASE_URI)
                 .multiPart("foo1", "bar1")
                 .multiPart("foo2", "bar2")
                 .log().all()
@@ -103,5 +104,22 @@ public class RequestParameters {
                 .statusCode(200)
                 .body("form.foo1", equalTo("bar1"))// Validate the form data in the response
                 .body("form.foo2", equalTo("bar2")); // Validate the form data in the response
+    }
+
+    @Test
+    public  void uploadFile_multiple_form_data(){
+        String attributes = "{\"name\" : \"temp.txt\" , \"parent\" : {\"id\" : \"1234\"}}";
+            given().
+                    baseUri(BASE_URI).
+                    log().all().
+                    multiPart("file", new File("temp.txt")).
+                    multiPart("attributes" ,attributes,"application/json" ). // Uploading a file with content
+                    when().
+                    post("/post").
+                    then().
+                    log().all().
+                    assertThat().
+                    statusCode(200);
+
     }
 }
