@@ -1,6 +1,7 @@
 package com.rest;
 
 import io.restassured.RestAssured;
+import io.restassured.config.EncoderConfig;
 import org.testng.annotations.Test;
 
 import java.io.File;
@@ -165,5 +166,28 @@ public class RequestParameters {
             os.write(fileBytes);
             System.out.println("✅ File downloaded successfully: " + outputFile.getAbsolutePath());
         }
+    }
+
+    @Test
+    public void formUrlEncodedExample() {
+        given()
+                .baseUri("https://postman-echo.com")
+                .config(config()
+                        .encoderConfig(
+                                EncoderConfig.encoderConfig()
+                                        .appendDefaultContentCharsetToContentTypeIfUndefined(false)
+                        )
+                )
+                .formParam("foo1", "bar1")
+                .formParam("foo2", "bar2")
+                .log().all()
+                .when()
+                .post("/post")
+                .then()
+                .log().all()
+                .assertThat()
+                .statusCode(200)
+                .body("form.foo1", equalTo("bar1"))
+                .body("form.foo2", equalTo("bar2"));
     }
 }
