@@ -6,6 +6,7 @@ import io.restassured.builder.RequestSpecBuilder;
 import io.restassured.builder.ResponseSpecBuilder;
 import io.restassured.filter.log.LogDetail;
 import io.restassured.http.ContentType;
+import io.restassured.mapper.ObjectMapper;
 import io.restassured.response.Response;
 import io.restassured.specification.ResponseSpecification;
 import org.testng.annotations.BeforeClass;
@@ -18,6 +19,7 @@ import static io.restassured.RestAssured.given;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.matchesPattern;
+
 
 /**
  * This class demonstrates how to automate POST requests using Rest Assured.
