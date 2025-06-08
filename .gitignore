@@ -1,5 +1,54 @@
+# IDE specific files
+.idea/
+*.iml
+*.iws
+*.ipr
+.vscode/
+.settings/
+.classpath
+.project
+
+# Maven
 target/
-!.mvn/wrapper/maven-wrapper.jar
+pom.xml.tag
+pom.xml.releaseBackup
+pom.xml.versionsBackup
+pom.xml.next
+release.properties
+dependency-reduced-pom.xml
+buildNumber.properties
+.mvn/timing.properties
+.mvn/wrapper/maven-wrapper.jar
+
+# Logs
+logs/
+*.log
+restassured.log
+temp.txt
+
+# Compiled class files
+*.class
+
+# Package files
+*.jar
+*.war
+*.nar
+*.ear
+*.zip
+*.tar.gz
+*.rar
+
+# Config files with sensitive data
+config.properties
+
+# OS specific files
+.DS_Store
+Thumbs.db
+
+# Ignore the config file with API keys
+config.properties
+
+# Ignore the following directories
 !**/src/main/**/target/
 !**/src/test/**/target/
 
