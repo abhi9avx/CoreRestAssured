@@ -1,40 +1,24 @@
-package com.resreq;
+package com.reqres.test;
 
 import io.restassured.RestAssured;
 import io.restassured.response.Response;
 import static org.testng.Assert.assertEquals;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.notNullValue;
-import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.util.Properties;
-
+import com.reqres.base.BaseTest;
 import com.resreq.pojo.ResourceListResponse;
 
-public class GetResourceListTest {
-    
-    private Properties properties;
-    
-    @BeforeClass
-    public void setup() throws IOException {
-        properties = new Properties();
-        FileInputStream fis = new FileInputStream("config.properties");
-        properties.load(fis);
-    }
+public class GetResourceListTest extends BaseTest {
     
     @Test
     public void getResourceList() {
-        // Set the base URI for the API
-        RestAssured.baseURI = "https://reqres.in/api/unknown";
-        
         // Make the GET request with required header
         Response response = RestAssured
         .given()
-        .header("x-api-key", properties.getProperty("reqres.api.key"))
+        .spec(requestSpec)
         .when()
-        .get();
+        .get("/api/unknown");
 
         // Deserialize the response into ResourceListResponse object
         ResourceListResponse resourceResponse = response.as(ResourceListResponse.class);
