@@ -1,5 +1,7 @@
 # IDE specific files
 .idea/
+.idea/*
+!.idea/.gitignore
 *.iml
 *.iws
 *.ipr
@@ -21,9 +23,10 @@ buildNumber.properties
 .mvn/wrapper/maven-wrapper.jar
 
 # Logs
-logs/
+src/test/resources/logs/
 *.log
 restassured.log
+reqres_test.log
 temp.txt
 
 # Compiled class files
@@ -44,9 +47,6 @@ config.properties
 # OS specific files
 .DS_Store
 Thumbs.db
-
-# Ignore the config file with API keys
-config.properties
 
 # Ignore the following directories
 !**/src/main/**/target/
