@@ -1,21 +1,27 @@
 package com.resreq.pojo;
 
-public class Support {
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
 
-    private String URL;
+@JsonInclude(JsonInclude.Include.NON_NULL)
+@JsonIgnoreProperties(ignoreUnknown = true)
+public class Support {
+    private String url;
     private String text;
-    public String getURL() {
-        return URL;
+
+    public String getUrl() {
+        return url;
     }
-    public void setURL(String uRL) {
-        URL = uRL;
+
+    public void setUrl(String url) {
+        this.url = url;
     }
+
     public String getText() {
         return text;
     }
+
     public void setText(String text) {
         this.text = text;
     }
-
-    
 }
