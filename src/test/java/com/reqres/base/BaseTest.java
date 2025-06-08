@@ -16,6 +16,14 @@ public class BaseTest {
         // Set base URI
         RestAssured.baseURI = "https://reqres.in";
 
+        // Configure RestAssured logging
+        RestAssured.enableLoggingOfRequestAndResponseIfValidationFails();
+        RestAssured.config = RestAssured.config()
+            .logConfig(RestAssured.config().getLogConfig()
+                .enableLoggingOfRequestAndResponseIfValidationFails()
+                .enablePrettyPrinting(true)
+                .defaultStream(new java.io.PrintStream("src/test/resources/logs/reqres_test.log")));
+
         // Load properties for API key
         Properties properties = new Properties();
         FileInputStream fis = new FileInputStream("config.properties");
