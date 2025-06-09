@@ -10,6 +10,7 @@ import java.io.IOException;
 public class BaseTest {
     protected RequestSpecification requestSpec;
     protected static final String BASE_URL = System.getProperty("BASE_URL", "https://reqres.in");
+    private static final String API_KEY = "reqres-free-v1";
 
     @BeforeClass
     public void setup() throws IOException {
@@ -30,9 +31,10 @@ public class BaseTest {
                 .enablePrettyPrinting(true)
                 .defaultStream(new java.io.PrintStream("src/test/resources/logs/reqres_test.log")));
 
-        // Create request specification
+        // Create request specification with API key
         requestSpec = new RequestSpecBuilder()
                 .setBaseUri(BASE_URL)
+                .addHeader("x-api-key", API_KEY)
                 .build();
     }
 } 
