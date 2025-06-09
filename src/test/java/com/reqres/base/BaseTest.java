@@ -13,8 +13,9 @@ public class BaseTest {
 
     @BeforeClass
     public void setup() throws IOException {
-        // Set base URI
-        RestAssured.baseURI = "https://reqres.in";
+        // Set base URI from system property or use default
+        String baseUrl = System.getProperty("BASE_URL", "https://reqres.in");
+        RestAssured.baseURI = baseUrl;
 
         // Configure RestAssured logging
         RestAssured.enableLoggingOfRequestAndResponseIfValidationFails();
@@ -26,12 +27,15 @@ public class BaseTest {
 
         // Load properties for API key
         Properties properties = new Properties();
-        FileInputStream fis = new FileInputStream("config.properties");
-        properties.load(fis);
-
-        // Create request specification with API key
-        requestSpec = new RequestSpecBuilder()
-                .addHeader("x-api-key", properties.getProperty("reqres.api.key"))
-                .build();
+        try (FileInputStream fis = new FileInputStream("config.properties")) {
+            properties.load(fis);
+            // Create request specification with API key
+            requestSpec = new RequestSpecBuilder()
+                    .addHeader("x-api-key", properties.getProperty("reqres.api.key"))
+                    .build();
+        } catch (IOException e) {
+            // If config.properties is not found, create request spec without API key
+            requestSpec = new RequestSpecBuilder().build();
+        }
     }
 } 
