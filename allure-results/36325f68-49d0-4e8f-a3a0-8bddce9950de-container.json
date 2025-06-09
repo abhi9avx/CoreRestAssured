@@ -1,1 +1,0 @@
-{"uuid":"36325f68-49d0-4e8f-a3a0-8bddce9950de","name":"com.reqres.test.GetResourceListTest","children":["7c2072f0-8a3e-4624-a286-2ce6fc5f3480"],"befores":[{"name":"setup","status":"passed","stage":"finished","description":"","steps":[],"attachments":[],"parameters":[],"start":1749447757334,"stop":1749447757476}],"afters":[],"start":1749447757325,"stop":1749447758112}
