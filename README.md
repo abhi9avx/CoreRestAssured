@@ -25,6 +25,41 @@ This project demonstrates API test automation using **REST Assured**, **TestNG**
     brew install allure
     ```
 
+## Project Structure
+
+This project follows a standard Maven project structure, organized to separate source code from test code and common utilities.
+
+```
+├── src/
+│   ├── main/
+│   │   └── java/
+│   │       └── com/
+│   │           └── resreq/        # Main application source code (e.g., POJOs)
+│   │               └── pojo/      # Plain Old Java Objects for API request/response
+│   │                   ├── UserListResponse.java
+│   │                   └── UserResponse.java
+│   └── test/
+│       ├── java/
+│       │   └── com/
+│       │       └── reqres/        # Test source code
+│       │           ├── base/      # Base test configuration (e.g., BaseTest.java)
+│       │           │   └── BaseTest.java
+│       │           └── test/      # API test classes
+│       │               ├── GetUserListTest.java
+│       │               ├── GetUserNotFoundTest.java
+│       │               └── GetUserTest.java
+│       └── resources/
+│           └── config.properties  # Configuration file for API properties
+├── docs/
+│   └── reports/                   # Directory for storing sample report screenshots
+│       ├── overview.png
+│       ├── test-results.png
+│       └── test-details.png
+├── pom.xml                        # Maven Project Object Model file
+├── testng.xml                     # TestNG Suite XML file for test execution
+└── README.md
+```
+
 ## Running Tests and Generating Allure Report
 
 To run all tests and generate the Allure report, follow these steps:
