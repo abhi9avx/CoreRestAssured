@@ -2,32 +2,183 @@
 
 This project is a REST API testing framework built using REST Assured, TestNG, and Allure for beautiful test reporting.
 
+## Quick Start
+
+1. **Clone the repository**
+   ```bash
+   git clone <repository-url>
+   cd CoreRestAssured
+   ```
+
+2. **Install Allure** (if not already installed)
+   ```bash
+   # For macOS
+   brew install allure
+   
+   # For Windows
+   scoop install allure
+   
+   # For Linux
+   sudo apt-add-repository ppa:qameta/allure
+   sudo apt-get update
+   sudo apt-get install allure
+   ```
+
+3. **Run Tests and Generate Report**
+   ```bash
+   # Run tests
+   mvn clean test
+   
+   # Generate and view report
+   allure serve target/allure-results
+   ```
+
+## Documentation
+
+### Sample Reports
+Check out the sample reports in the `docs/reports` directory to see what the Allure reports look like:
+- [Sample Report Overview](docs/reports/overview.png)
+- [Test Results](docs/reports/test-results.png)
+- [Test Details](docs/reports/test-details.png)
+
+### Report Generation
+
+1. **Generate Results**
+   ```bash
+   mvn clean test
+   ```
+   This will:
+   - Run all tests
+   - Generate test results in `target/allure-results/`
+   - (Note: This directory is git-ignored as it contains generated files)
+
+2. **View Report**
+   ```bash
+   allure serve target/allure-results
+   ```
+   This will:
+   - Start a local web server
+   - Open the report in your default browser
+   - Show an interactive, beautiful report
+
+3. **Generate Static Report** (for sharing)
+   ```bash
+   allure generate target/allure-results -o target/allure-report
+   ```
+   This will:
+   - Generate a static HTML report
+   - Save it in `target/allure-report/`
+   - (Note: This directory is git-ignored as it contains generated files)
+
+### Important Notes
+
+1. **Generated Directories**
+   The following directories are automatically generated and should not be committed to Git:
+   - `target/allure-results/` - Raw test results
+   - `target/allure-report/` - Generated HTML report
+   - `.allure/` - Allure framework files
+
+2. **Viewing Reports**
+   - Always use `allure serve` for the best experience
+   - The report is interactive and provides detailed test information
+   - You can filter, search, and analyze test results
+
+3. **Sharing Reports**
+   - Use `allure generate` to create shareable reports
+   - Share the generated HTML files
+   - Or use Allure's reporting plugins in CI/CD
+
+## Project Structure
+
+```
+├── src/
+│   ├── main/
+│   │   └── java/
+│   │       └── com/
+│   │           └── reqres/
+│   │               ├── base/
+│   │               ├── pojo/
+│   │               └── utils/
+│   └── test/
+│       ├── java/
+│       │   └── com/
+│       │       └── reqres/
+│       │           └── test/
+│       └── resources/
+│           └── config.properties
+├── docs/
+│   └── reports/
+│       ├── overview.png
+│       ├── test-results.png
+│       └── test-details.png
+├── pom.xml
+└── README.md
+```
+
+## Report Features
+
+1. **Overview Dashboard**
+   - Test execution summary
+   - Pass/Fail statistics
+   - Duration trends
+   - Environment information
+
+2. **Test Details**
+   - Step-by-step test execution
+   - Request/Response data
+   - Error messages (if any)
+   - Test duration
+
+3. **Interactive Features**
+   - Filterable results
+   - Search functionality
+   - Expandable test steps
+   - Detailed test information
+
+## Best Practices
+
+1. **Running Tests**
+   - Always use `mvn clean test` to ensure clean results
+   - Check the console output for immediate feedback
+   - Use `allure serve` to view detailed results
+
+2. **Viewing Reports**
+   - Use the interactive features to analyze results
+   - Check the Overview dashboard first
+   - Drill down into specific tests as needed
+
+3. **Sharing Results**
+   - Generate static reports for sharing
+   - Include relevant screenshots in documentation
+   - Use CI/CD integration for automated reporting
+
+## Troubleshooting
+
+1. **Report Not Opening**
+   - Ensure Allure is installed correctly
+   - Check if tests ran successfully
+   - Verify the results directory exists
+
+2. **No Test Results**
+   - Run `mvn clean test` first
+   - Check if tests are configured correctly
+   - Verify Allure listener is properly set up
+
+## Additional Resources
+
+- [Allure Framework Documentation](https://docs.qameta.io/allure/)
+- [REST Assured Documentation](https://rest-assured.io/)
+- [TestNG Documentation](https://testng.org/doc/)
+
+## Contributing
+
+Feel free to submit issues and enhancement requests!
+
 ## Prerequisites
 
 - Java JDK 8 or higher
 - Maven
 - Allure Command Line Tool
-
-## Installation
-
-### 1. Install Allure Command Line Tool
-
-#### For macOS:
-```bash
-brew install allure
-```
-
-#### For Windows (using scoop):
-```bash
-scoop install allure
-```
-
-#### For Linux:
-```bash
-sudo apt-add-repository ppa:qameta/allure
-sudo apt-get update
-sudo apt-get install allure
-```
 
 ## Project Structure
 

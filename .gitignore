@@ -22,6 +22,13 @@ buildNumber.properties
 .mvn/timing.properties
 .mvn/wrapper/maven-wrapper.jar
 
+# Allure
+.allure/
+allure-results/
+allure-report/
+target/allure-results/
+target/allure-report/
+
 # Logs
 src/test/resources/logs/
 *.log
@@ -85,7 +92,6 @@ build/
 
 ### Mac OS ###
 .DS_Store
-
 
 # Ignore the config file with API key
 config.properties 
