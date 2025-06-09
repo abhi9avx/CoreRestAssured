@@ -1,32 +1,60 @@
-# ReqRes API Automation Framework
+# REST Assured API Testing Framework with Allure Reporting
 
-This project is an automated test framework for the ReqRes API (https://reqres.in) using Rest Assured, TestNG, and Java.
+This project is a REST API testing framework built using REST Assured, TestNG, and Allure for beautiful test reporting.
+
+## Prerequisites
+
+- Java JDK 8 or higher
+- Maven
+- Allure Command Line Tool
+
+## Installation
+
+### 1. Install Allure Command Line Tool
+
+#### For macOS:
+```bash
+brew install allure
+```
+
+#### For Windows (using scoop):
+```bash
+scoop install allure
+```
+
+#### For Linux:
+```bash
+sudo apt-add-repository ppa:qameta/allure
+sudo apt-get update
+sudo apt-get install allure
+```
 
 ## Project Structure
 
 ```
-├── src/
-│   ├── main/
-│   │   └── java/
-│   │       └── com/
-│   │           └── resreq/
+├── src
+│   ├── main
+│   │   └── java
+│   │       └── com
+│   │           └── reqres
+│   │               ├── base
+│   │               ├── pojo
+│   │               └── utils
 │   │               └── pojo/           # POJO classes for request/response
 │   │                   ├── UserResponse.java
 │   │                   ├── UserData.java
 │   │                   ├── Support.java
 │   │                   ├── ResourceListResponse.java
 │   │                   └── DataItem.java
-│   └── test/
-│       └── java/
-│           └── com/
-│               └── reqres/
-│                   ├── base/           # Common setup and utilities
-│                   │   └── BaseTest.java
-│                   └── test/           # Test classes
-│                       ├── GetUserTest.java
-│                       ├── GetUserNotFoundTest.java
-│                       └── GetResourceListTest.java
-└── config.properties                   # Configuration file for API key
+│   └── test
+│       ├── java
+│       │   └── com
+│       │       └── reqres
+│       │           └── test
+│       └── resources
+│           └── config.properties
+├── pom.xml
+└── README.md
 ```
 
 ## Features
@@ -90,64 +118,146 @@ This project is an automated test framework for the ReqRes API (https://reqres.i
 
 ## Running Tests
 
-1. **Using Maven**
-   ```bash
-   mvn clean test
+### 1. Run Tests with Allure Results Generation
+
+```bash
+mvn clean test -Dallure.results.directory=target/allure-results
+```
+
+### 2. Generate and View Allure Report
+
+There are two ways to view the Allure report:
+
+#### Option 1: Using Allure Serve (Recommended)
+```bash
+allure serve target/allure-results
+```
+This will:
+- Generate the report
+- Start a local web server
+- Open the report in your default browser
+- The report will be available at `http://localhost:XXXX` (port number will be shown in the console)
+
+#### Option 2: Generate Static Report
+```bash
+allure generate target/allure-results -o target/allure-report
+```
+This will generate a static HTML report in the `target/allure-report` directory.
+
+## Understanding Allure Reports
+
+The Allure report provides several key sections:
+
+1. **Overview**
+   - Test execution summary
+   - Duration and status statistics
+   - Environment information
+
+2. **Categories**
+   - Test categorization based on failures
+   - Custom categories if defined
+
+3. **Suites**
+   - Test suite organization
+   - Test class and method details
+
+4. **Graphs**
+   - Test execution trends
+   - Duration distribution
+   - Status breakdown
+
+5. **Timeline**
+   - Chronological view of test execution
+   - Parallel execution visualization
+
+6. **Behaviors**
+   - BDD-style test organization
+   - Feature and story breakdown
+
+## Adding Allure Annotations to Tests
+
+Here's how to enhance your test reports with Allure annotations:
+
+```java
+import io.qameta.allure.*;
+
+@Feature("Resource List API")
+public class GetResourceListTest extends BaseTest {
+    
+    @Test
+    @Description("Test to verify the resource list API functionality")
+    @Severity(SeverityLevel.CRITICAL)
+    @Story("Get Resource List")
+    public void getResourceList() {
+        // Test implementation
+    }
+}
+```
+
+### Available Allure Annotations
+
+1. **@Feature** - Groups tests by feature
+2. **@Story** - Groups tests by user story
+3. **@Description** - Adds detailed test description
+4. **@Severity** - Marks test severity level
+5. **@Step** - Marks individual test steps
+6. **@Attachment** - Attaches additional information
+7. **@Link** - Adds links to related documentation
+8. **@Issue** - Links tests to specific issues
+
+## Best Practices
+
+1. **Use Meaningful Descriptions**
+   ```java
+   @Description("Verify that user can successfully create a new workspace")
    ```
 
-2. **Using TestNG XML**
-   - Right-click on `testng.xml`
-   - Select "Run As" > "TestNG Suite"
+2. **Add Steps for Complex Operations**
+   ```java
+   @Step("Creating new workspace with name: {name}")
+   public void createWorkspace(String name) {
+       // Implementation
+   }
+   ```
 
-## Project Structure Details
+3. **Attach Important Information**
+   ```java
+   @Attachment(value = "Response", type = "text/plain")
+   public String attachResponse(String response) {
+       return response;
+   }
+   ```
 
-### Base Test Class
-- Handles common setup for all tests
-- Manages base URL and API key configuration
-- Provides request specification for API calls
+4. **Use Severity Levels Appropriately**
+   - BLOCKER
+   - CRITICAL
+   - NORMAL
+   - MINOR
+   - TRIVIAL
 
-### POJO Classes
-- **UserResponse**: Main response structure for user endpoints
-- **UserData**: User information model
-- **Support**: Support information model
-- **ResourceListResponse**: Response structure for resource list
-- **DataItem**: Individual resource item model
+## Troubleshooting
 
-### Test Classes
-- **GetUserTest**: Tests user retrieval functionality
-- **GetUserNotFoundTest**: Tests error handling for non-existent users
-- **GetResourceListTest**: Tests resource list retrieval
+1. **Report Not Opening**
+   - Ensure Allure command line tool is installed
+   - Check if the results directory exists
+   - Verify no other process is using the default port
 
-## Best Practices Implemented
+2. **No Test Results in Report**
+   - Verify tests are running successfully
+   - Check if Allure listener is properly configured
+   - Ensure correct results directory is specified
 
-1. **Code Organization**
-   - Clear package structure
-   - Separation of concerns
-   - Reusable components
+3. **Missing Annotations**
+   - Verify Allure dependencies in pom.xml
+   - Check import statements
+   - Ensure correct annotation usage
 
-2. **Test Design**
-   - Independent test cases
-   - Clear assertions
-   - Proper error handling
+## Additional Resources
 
-3. **Security**
-   - API key management
-   - Configuration file handling
-   - Secure data handling
-
-4. **Maintainability**
-   - Common setup in base class
-   - Reusable POJO classes
-   - Clear naming conventions
+- [Allure Framework Documentation](https://docs.qameta.io/allure/)
+- [REST Assured Documentation](https://rest-assured.io/)
+- [TestNG Documentation](https://testng.org/doc/)
 
 ## Contributing
 
-1. Fork the repository
-2. Create a feature branch
-3. Commit your changes
-4. Push to the branch
-5. Create a Pull Request
-
-## License
-
-This project is licensed under the MIT License - see the LICENSE file for details. 
+Feel free to submit issues and enhancement requests! 

@@ -8,10 +8,19 @@ import static org.hamcrest.Matchers.notNullValue;
 import org.testng.annotations.Test;
 import com.reqres.base.BaseTest;
 import com.resreq.pojo.ResourceListResponse;
+import io.qameta.allure.Description;
+import io.qameta.allure.Severity;
+import io.qameta.allure.SeverityLevel;
+import io.qameta.allure.Feature;
+import io.qameta.allure.Story;
 
+@Feature("Resource List API")
 public class GetResourceListTest extends BaseTest {
     
     @Test
+    @Description("Test to verify the resource list API functionality")
+    @Severity(SeverityLevel.CRITICAL)
+    @Story("Get Resource List")
     public void getResourceList() {
         // Make the GET request with required header
         Response response = RestAssured
