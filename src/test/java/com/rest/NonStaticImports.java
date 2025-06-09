@@ -1,6 +1,6 @@
 package com.rest;
 
-import com.utils.ConfigReader;
+import com.reqres.utils.ConfigReader;
 import io.restassured.RestAssured;
 import org.testng.annotations.Test;
 

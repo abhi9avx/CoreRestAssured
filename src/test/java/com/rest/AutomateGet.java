@@ -1,6 +1,6 @@
 package com.rest;
 
-import com.utils.ConfigReader;
+import com.reqres.utils.ConfigReader;
 import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
 import org.apache.http.conn.util.PublicSuffixList;
@@ -209,16 +209,16 @@ public class AutomateGet {
 //	•	Learned how to:
 //	•	Extract a field directly from response using .path().
 //	•	Use TestNG assertions (Assert.assertEquals) for clear pass/fail results.
-//	•	Combine REST Assured’s fluent syntax with custom validation logic.
+//	•	Combine REST Assured's fluent syntax with custom validation logic.
 
 //✅Test Case 5: hamcrest_assertions_inside_body() Test Case
 //	1.	Hamcrest Integration with REST Assured:
 //	•	Learned how to use Hamcrest matchers directly inside the .body() method to perform fluent, readable, and expressive validations on API responses.
 //	2.	Validating Response List:
 //	•	Used hasSize(n) to assert the number of items in the workspaces list.
-//	•	Used not(empty()) to ensure the list isn’t empty.
+//	•	Used not(empty()) to ensure the list isn't empty.
 //	3.	Validating Specific Field Values:
-//	•	Validated a specific field’s value using equalTo().
+//	•	Validated a specific field's value using equalTo().
 //	•	Checked presence of an expected item in a list using hasItem().
 //	4.	Null-Safety and Data Quality:
 //	•	Ensured all workspace names are non-null with everyItem(notNullValue()).
@@ -248,8 +248,8 @@ public class AutomateGet {
 
 //🔒 blacklistHeader("x-api-key")
 //
-//This tells REST Assured to hide or mask that header when logging, so it won’t expose secrets in logs.
+//This tells REST Assured to hide or mask that header when logging, so it won't expose secrets in logs.
 //
-//🛡️ Why use it?
+//��️ Why use it?
 //	•	Prevents leaking API keys, tokens, auth headers, etc. in console or CI logs.
 //	•	Very useful for security & compliance in teams and open environments.
