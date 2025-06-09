@@ -6,6 +6,7 @@ import io.restassured.builder.RequestSpecBuilder;
 import io.restassured.builder.ResponseSpecBuilder;
 import io.restassured.filter.log.LogDetail;
 import io.restassured.http.ContentType;
+import io.restassured.specification.RequestSpecification;
 import io.restassured.specification.ResponseSpecification;
 import io.restassured.response.Response;
 import org.testng.annotations.BeforeClass;
@@ -13,45 +14,31 @@ import org.testng.annotations.Test;
 
 import static io.restassured.RestAssured.get;
 import static io.restassured.RestAssured.expect;
+import static io.restassured.RestAssured.given;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.lessThan;
 
 public class ResponseSpecificationTest {
 
-    // Declaring reusable response specification
+    private RequestSpecification requestSpec;
     private ResponseSpecification responseSpec;
-
-    // Base URL and API key will be read from config file
-    private String baseUrl;
-    private String apiKey;
+    private static final String BASE_URL = System.getProperty("BASE_URL", "https://reqres.in");
 
     @BeforeClass
     public void setup() {
-        // Load config values
-        baseUrl = ConfigReader.getValue("base.url");
-        apiKey = ConfigReader.getValue("postman.api.key");
+        // ✅ Request specification
+        requestSpec = new RequestSpecBuilder()
+                .setBaseUri(BASE_URL)
+                .addHeader("x-api-key", ConfigReader.getValue("postman.api.key"))
+                .build();
 
-        // Build the request specification using RestAssured
-        RequestSpecBuilder requestSpecBuilder = new RequestSpecBuilder()
-                .setBaseUri(baseUrl) // Set base URI for all requests
-                .addHeader("X-API-Key", apiKey) // Add API key as a header
-                .setContentType(ContentType.JSON) // Set content type to JSON
-                .log(LogDetail.ALL); // Log all request details for debugging
-
-        // Assign request spec to RestAssured globally
-        RestAssured.requestSpecification = requestSpecBuilder.build();
-
-//        // Build the expected response specification
-//        responseSpec = expect()
-//                .statusCode(200) // Expect HTTP status code 200
-//                .contentType(ContentType.JSON); // Expect JSON response
-
-        ResponseSpecBuilder responseSpecBuilder = new ResponseSpecBuilder()
+        // ✅ Response specification
+        responseSpec = new ResponseSpecBuilder()
                 .expectStatusCode(200)
-                .expectContentType(ContentType.JSON)
-                .log(LogDetail.ALL);
-
-        responseSpec = responseSpecBuilder.build(); // ✅ Correct assignment
+                .expectResponseTime(lessThan(3000L))
+                .expectBody("workspaces[0].name", equalTo("My Workspace"))
+                .build();
     }
 
     @Test

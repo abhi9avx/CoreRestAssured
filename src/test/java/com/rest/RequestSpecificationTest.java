@@ -14,15 +14,15 @@ import static org.hamcrest.Matchers.equalTo;
 public class RequestSpecificationTest {
 
     private RequestSpecification reqSpec;
+    private static final String BASE_URL = System.getProperty("BASE_URL", "https://reqres.in");
 
     @BeforeClass
     public void setup() {
-        String baseUrl = ConfigReader.getValue("base.url");
         String apiKey = ConfigReader.getValue("postman.api.key");
 
         // ✅ Reusable request specification
         reqSpec = given()
-                .baseUri(baseUrl)
+                .baseUri(BASE_URL)
                 .header("x-api-key", apiKey)
                 .log().all(); // Optional: Log all request info
     }
