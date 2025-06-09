@@ -38,6 +38,7 @@ public class GetUserListTest extends BaseTest {
     @Step("Making GET request to {0} with page={1}")
     private Response makeGetRequest(int page) {
         return given()
+                .spec(requestSpec)
                 .when()
                 .get(API_PATH + "?page=" + page);
     }
