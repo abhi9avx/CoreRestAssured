@@ -260,4 +260,196 @@ public class GetResourceListTest extends BaseTest {
 
 ## Contributing
 
-Feel free to submit issues and enhancement requests! 
+Feel free to submit issues and enhancement requests!
+
+## Understanding Report Generation and Storage
+
+### Report Generation Process
+
+1. **Test Execution and Results Collection**
+   - When you run `mvn clean test`, the following happens:
+     - Tests are executed
+     - Allure listener collects test results
+     - Results are stored in `target/allure-results/` directory
+     - Each test generates a JSON file with test details
+
+2. **Report Generation**
+   - When you run `allure serve` or `allure generate`:
+     - Allure reads the JSON files from `target/allure-results/`
+     - Processes the data
+     - Generates HTML report
+
+### File Locations
+
+1. **Test Results (Not in Git)**
+   - Location: `target/allure-results/`
+   - Contains: Raw test execution data in JSON format
+   - Generated: During test execution
+   - Git Status: Ignored (in .gitignore)
+
+2. **Generated Report (Not in Git)**
+   - Location: `target/allure-report/` (when using `allure generate`)
+   - Contains: HTML report files
+   - Generated: When running `allure generate`
+   - Git Status: Ignored (in .gitignore)
+
+3. **Temporary Report (Not in Git)**
+   - Location: Temporary directory (when using `allure serve`)
+   - Contains: HTML report files
+   - Generated: When running `allure serve`
+   - Git Status: Not tracked (temporary files)
+
+### Why Reports Are Not in Git
+
+The report files are not stored in Git because:
+1. They are generated files that can be recreated
+2. They can be large in size
+3. They are environment-specific
+4. They change with every test run
+
+### How to Share Reports
+
+1. **For Team Members**
+   - Each team member can generate reports locally using:
+     ```bash
+     mvn clean test
+     allure serve target/allure-results
+     ```
+
+2. **For CI/CD Pipeline**
+   - Add these steps to your pipeline:
+     ```yaml
+     - mvn clean test
+     - allure generate target/allure-results
+     - allure report:deploy
+     ```
+
+3. **For External Sharing**
+   - Generate a static report:
+     ```bash
+     allure generate target/allure-results -o target/allure-report
+     ```
+   - Share the contents of `target/allure-report/` directory
+   - The report can be opened by anyone with a web browser
+
+### Report Generation Commands Explained
+
+1. **Generate Results**
+   ```bash
+   mvn clean test -Dallure.results.directory=target/allure-results
+   ```
+   - Cleans previous build
+   - Runs tests
+   - Stores results in `target/allure-results/`
+
+2. **Serve Report (Interactive)**
+   ```bash
+   allure serve target/allure-results
+   ```
+   - Generates report in temp directory
+   - Starts local web server
+   - Opens in browser
+   - Report is temporary
+
+3. **Generate Static Report**
+   ```bash
+   allure generate target/allure-results -o target/allure-report
+   ```
+   - Generates report in specified directory
+   - Creates static HTML files
+   - Can be shared or archived 
+
+## Report Appearance and Navigation
+
+### What You'll See in the Report
+
+The Allure report provides a beautiful, interactive interface with the following sections:
+
+1. **Overview Dashboard**
+   - Test execution summary
+   - Pass/Fail statistics
+   - Duration trends
+   - Environment information
+
+2. **Categories View**
+   - Test categorization
+   - Failure analysis
+   - Custom categories
+
+3. **Suites View**
+   - Test suite organization
+   - Detailed test information
+   - Execution history
+
+4. **Graphs**
+   - Test execution trends
+   - Duration distribution
+   - Status breakdown
+
+5. **Timeline**
+   - Chronological test execution
+   - Parallel execution visualization
+
+### Important Note About Directories
+
+You might notice these directories in your project:
+- `.allure/` - Contains Allure framework files (can be safely ignored)
+- `target/allure-results/` - Contains raw test results (JSON files)
+- `target/allure-report/` - Contains the generated HTML report
+
+**Do not commit these directories to Git!** They are:
+- Generated automatically
+- Can be recreated
+- May contain environment-specific data
+
+### How to View the Report
+
+1. **Interactive View (Recommended)**
+   ```bash
+   allure serve target/allure-results
+   ```
+   This opens a beautiful, interactive report in your browser.
+
+2. **Static Report**
+   ```bash
+   allure generate target/allure-results -o target/allure-report
+   ```
+   This generates a static HTML report that can be shared.
+
+### Report Features
+
+1. **Interactive Elements**
+   - Expandable test steps
+   - Filterable results
+   - Search functionality
+   - Detailed test information
+
+2. **Test Details**
+   - Test steps
+   - Request/Response data
+   - Environment information
+   - Test duration
+   - Error messages (if any)
+
+3. **Visual Elements**
+   - Status indicators
+   - Progress bars
+   - Charts and graphs
+   - Timeline visualization
+
+### Best Practices for Report Sharing
+
+1. **For Team Members**
+   - Use `allure serve` for local viewing
+   - Share screenshots of important findings
+   - Use the report's export features
+
+2. **For CI/CD**
+   - Configure your pipeline to generate and host reports
+   - Use Allure's reporting plugins
+   - Set up report archiving
+
+3. **For Documentation**
+   - Take screenshots of key report sections
+   - Document important metrics
+   - Share report URLs when available 
