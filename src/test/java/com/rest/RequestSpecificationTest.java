@@ -1,6 +1,6 @@
 package com.rest;
 
-import com.reqres.utils.ConfigReader;
+import com.resreq.utils.ConfigReader;
 import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;

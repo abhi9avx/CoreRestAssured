@@ -1,6 +1,6 @@
 package com.rest;
 
-import com.reqres.utils.ConfigReader;
+import com.resreq.utils.ConfigReader;
 import io.restassured.RestAssured;
 import io.restassured.builder.RequestSpecBuilder;
 import io.restassured.builder.ResponseSpecBuilder;
