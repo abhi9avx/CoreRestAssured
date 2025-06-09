@@ -1,26 +1,31 @@
 package com.rest;
 
-import com.resreq.utils.ConfigReader;
 import io.restassured.RestAssured;
 import org.testng.annotations.Test;
-
+import org.testng.annotations.BeforeClass;
 
 import static org.hamcrest.Matchers.equalTo;
+import static io.restassured.RestAssured.given;
 
-public class NonStaticImports {
+import com.reqres.base.BaseTest;
+import java.io.IOException;
+
+public class NonStaticImports extends BaseTest {
+
+    @Override
+    @BeforeClass
+    public void setup() throws IOException {
+        super.setup(); // Call BaseTest's setup method
+    }
 
     @Test
     public void testNonStaticImports() {
-        String baseUrl = ConfigReader.getValue("base.url");
-        String apiKey = ConfigReader.getValue("postman.api.key");
-        RestAssured
-                .given()
-                .baseUri(baseUrl)
-                .header("x-api-key", apiKey)
+        given()
+                .spec(requestSpec) // Use inherited requestSpec
                 .when()
-                .get("/workspaces")
+                .get("/api/users?page=2")
                 .then()
                 .statusCode(200)
-                .body("workspaces[0].name", equalTo("My Workspace"));
+                .body("data[0].email", equalTo("michael.lawson@reqres.in")); // Adjusted for reqres.in response
     }
 }

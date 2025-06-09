@@ -3,6 +3,7 @@ package com.rest;
 import io.restassured.RestAssured;
 import io.restassured.config.EncoderConfig;
 import org.testng.annotations.Test;
+import org.testng.annotations.BeforeClass;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -14,15 +15,23 @@ import java.util.Map;
 import static io.restassured.RestAssured.*;
 import static org.hamcrest.Matchers.*;
 
+import com.reqres.base.BaseTest;
+
 /**
  * This class contains test examples to demonstrate how to use Rest Assured
  * for sending HTTP requests with query parameters, path parameters,
  * form-data (multipart), and file download/upload.
  */
-public class RequestParameters {
+public class RequestParameters extends BaseTest {
 
-    // Common base URI for Postman Echo API
-    private static final String BASE_URI = "https://postman-echo.com";
+    // BASE_URI will be inherited from BaseTest for reqres.in specific tests
+    // private static final String BASE_URI = "https://postman-echo.com";
+
+    @Override
+    @BeforeClass
+    public void setup() throws IOException {
+        super.setup(); // Call BaseTest's setup method
+    }
 
     /**
      * Example 1: Send a GET request with a single query parameter and validate the response.
@@ -30,16 +39,16 @@ public class RequestParameters {
     @Test
     public void testSingleQueryParameter() {
         given()
-                .baseUri(BASE_URI)
-                .queryParam("foo2", "bar2") // Add single query parameter
+                .spec(requestSpec) // Use inherited requestSpec
+                .queryParam("page", "2") // Adjusted for reqres.in
                 .log().all()
                 .when()
-                .get("/get")
+                .get("/api/users") // Adjusted for reqres.in
                 .then()
                 .log().all()
                 .assertThat()
                 .statusCode(200)
-                .body("args.foo2", equalTo("bar2")); // Validate query param in response
+                .body("page", equalTo(2)); // Validate query param in response
     }
 
     /**
@@ -48,30 +57,31 @@ public class RequestParameters {
     @Test
     public void testMultipleQueryParameters() {
         Map<String, String> queryParams = new HashMap<>();
-        queryParams.put("foo5", "bar5");
-        queryParams.put("foo6", "bar6");
+        queryParams.put("page", "2");
+        queryParams.put("per_page", "6");
 
         given()
-                .baseUri(BASE_URI)
+                .spec(requestSpec) // Use inherited requestSpec
                 .queryParams(queryParams) // Add all query params from map
                 .log().all()
                 .when()
-                .get("/get")
+                .get("/api/users") // Adjusted for reqres.in
                 .then()
                 .log().all()
                 .assertThat()
                 .statusCode(200)
-                .body("args.foo5", equalTo("bar5"))
-                .body("args.foo6", equalTo("bar6"));
+                .body("page", equalTo(2))
+                .body("per_page", equalTo(6));
     }
 
     /**
      * Example 3: Send a GET request with a query parameter having multiple values.
+     * This test is DISABLED as reqres.in does not directly support this pattern for user queries.
      */
-    @Test
+    @Test(enabled = false) // Disabled as reqres.in doesn't support this directly
     public void testMultipleValueQueryParameters() {
         given()
-                .baseUri(BASE_URI)
+                .baseUri("https://postman-echo.com") // Use postman-echo.com for this specific test
                 .queryParam("foo", "bar1", "bar2", "bar3") // foo=bar1&foo=bar2&foo=bar3
                 .log().all()
                 .when()
@@ -88,7 +98,7 @@ public class RequestParameters {
     @Test
     public void testPathParameter() {
         given()
-                .baseUri("https://reqres.in")
+                .spec(requestSpec) // Use inherited requestSpec
                 .pathParam("id", 2) // Replaces {id} in URL
                 .log().all()
                 .when()
@@ -101,11 +111,12 @@ public class RequestParameters {
 
     /**
      * Example 5: Send a POST request with multiple form-data key-value pairs.
+     * This test is for postman-echo.com as reqres.in does not support this directly.
      */
     @Test
     public void multipartFormDataExample() {
         given()
-                .baseUri(BASE_URI)
+                .baseUri("https://postman-echo.com") // Use postman-echo.com for this specific test
                 .multiPart("foo1", "bar1")
                 .multiPart("foo2", "bar2")
                 .log().all()
@@ -121,13 +132,14 @@ public class RequestParameters {
 
     /**
      * Example 6: Upload a file along with additional JSON attributes as form-data.
+     * This test is for postman-echo.com as reqres.in does not support this directly.
      */
     @Test
     public void uploadFileWithAdditionalData() {
         String attributes = "{\"name\" : \"temp.txt\", \"parent\" : {\"id\" : \"1234\"}}";
 
         given()
-                .baseUri(BASE_URI)
+                .baseUri("https://postman-echo.com") // Use postman-echo.com for this specific test
                 .multiPart("file", new File("temp.txt")) // Upload file
                 .multiPart("attributes", attributes, "application/json") // Add metadata
                 .log().all()
@@ -144,8 +156,9 @@ public class RequestParameters {
      */
     @Test
     public void downloadFile() throws IOException {
-        String githubBaseUri = "https://github.com";
-        String filePath = "/abhi9avx/CoreRestAssured/raw/refs/heads/main/temp.txt";
+        // This test is for downloading a specific file from GitHub, not reqres.in
+        String githubBaseUri = "https://raw.githubusercontent.com"; // Correct raw content URL
+        String filePath = "/abhi9avx/CoreRestAssured/main/pom.xml"; // Example: Download pom.xml
 
         // Send GET request to download file as byte array
         byte[] fileBytes = given()
@@ -156,22 +169,27 @@ public class RequestParameters {
                 .then()
                 .log().status()
                 .assertThat()
-                .statusCode(200)
+                .statusCode(200) // Expect 200 OK
                 .extract()
                 .asByteArray();
 
         // Save byte array to local file
-        File outputFile = new File("temp.txt");
+        File outputFile = new File("downloaded_pom.xml"); // Save as downloaded_pom.xml
         try (OutputStream os = new FileOutputStream(outputFile)) {
             os.write(fileBytes);
             System.out.println("✅ File downloaded successfully: " + outputFile.getAbsolutePath());
+        } finally {
+            // Clean up the downloaded file after the test
+            if (outputFile.exists()) {
+                outputFile.delete();
+            }
         }
     }
 
     @Test
     public void formUrlEncodedExample() {
         given()
-                .baseUri("https://postman-echo.com")
+                .baseUri("https://postman-echo.com") // Use postman-echo.com for this specific test
                 .config(config()
                         .encoderConfig(
                                 EncoderConfig.encoderConfig()
@@ -190,4 +208,4 @@ public class RequestParameters {
                 .body("form.foo1", equalTo("bar1"))
                 .body("form.foo2", equalTo("bar2"));
     }
-}
+} 

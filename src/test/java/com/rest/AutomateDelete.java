@@ -1,64 +1,63 @@
 package com.rest;
 
-import com.resreq.utils.ConfigReader;
 import io.restassured.RestAssured;
 import io.restassured.builder.RequestSpecBuilder;
-import io.restassured.builder.ResponseSpecBuilder;
-import io.restassured.filter.log.LogDetail;
-import io.restassured.http.ContentType;
-import io.restassured.specification.ResponseSpecification;
+import io.restassured.specification.RequestSpecification;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.equalTo;
 
+import com.reqres.base.BaseTest;
+import java.io.IOException;
+
 /**
  * This class demonstrates how to automate a DELETE request using Rest Assured
- * to remove a workspace from Postman and verify the response.
+ * to remove a user from reqres.in and verify the response.
  */
-public class AutomateDelete {
+public class AutomateDelete extends BaseTest {
 
-    private ResponseSpecification responseSpec;
+    // Remove explicit RequestSpecification as it will be inherited from BaseTest
+    // private RequestSpecification requestSpec;
 
+    @Override
     @BeforeClass
-    public void setup() {
-        // Load base URL and API key from config properties
-        String baseUrl = ConfigReader.getValue("base.url");
-        String apiKey = ConfigReader.getValue("postman.api.key");
-
-        // Setup common request specification for all API calls
-        RestAssured.requestSpecification = new RequestSpecBuilder()
-                .setBaseUri(baseUrl)
-                .addHeader("X-Api-Key", apiKey)
-                .setContentType(ContentType.JSON)
-                .log(LogDetail.ALL)
-                .build();
-
-        // Setup common expected response specification
-        responseSpec = new ResponseSpecBuilder()
-                .expectStatusCode(200)
-                .expectContentType(ContentType.JSON)
-                .log(LogDetail.ALL)
-                .build();
-
-        RestAssured.responseSpecification = responseSpec;
+    public void setup() throws IOException {
+        super.setup(); // Call BaseTest's setup method
     }
 
     /**
-     * Test to validate DELETE operation for a workspace by ID.
+     * Test to validate DELETE operation for a user by ID on reqres.in.
      */
     @Test
     public void validateDeleteRequest() {
-        String workspaceId = "66a4ac7b-58ef-4137-9b98-80f98b3b47cf"; // Replace with valid ID
+        RestAssured.responseSpecification = null; // Clear any global response spec
+        int userId = 2; // Example: delete user with ID 2
 
         given()
-                .pathParam("workspaceId", workspaceId)
+                .spec(requestSpec)
+                .pathParam("id", userId)
                 .when()
-                .delete("/workspaces/{workspaceId}")
+                .delete("/api/users/{id}")
                 .then()
                 .log().all()
-                .spec(responseSpec)
-                .body("workspace.id", equalTo(workspaceId));
+                .assertThat()
+                .statusCode(204) // Expect 204 No Content for successful delete
+                .contentType(""); // Explicitly expect no content type for 204 response
+    }
+
+    @Test
+    public void deleteUser() {
+        RestAssured.responseSpecification = null; // Clear any global response spec
+        given()
+                .spec(requestSpec)
+                .when()
+                .delete("/api/users/2")
+                .then()
+                .log().all()
+                .assertThat()
+                .statusCode(204) // Expect 204 No Content for successful delete
+                .contentType(""); // Explicitly expect no content type for 204 response
     }
 }

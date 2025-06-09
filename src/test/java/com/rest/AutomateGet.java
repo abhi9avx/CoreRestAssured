@@ -1,9 +1,7 @@
 package com.rest;
 
-import com.resreq.utils.ConfigReader;
 import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
-import org.apache.http.conn.util.PublicSuffixList;
 import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
@@ -14,38 +12,36 @@ import static io.restassured.config.LogConfig.logConfig;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.*;
 
-public class AutomateGet {
+import com.reqres.base.BaseTest;
+import java.io.IOException;
 
-    private String baseUrl;
-    private String apiKey;
+public class AutomateGet extends BaseTest {
 
+    @Override
     @BeforeClass
-    public void setup() {
-        baseUrl = ConfigReader.getValue("base.url");
-        apiKey = ConfigReader.getValue("postman.api.key");
+    public void setup() throws IOException {
+        super.setup();
     }
 
     @Test
     public void validateGetStatusCode() {
         given()
-                .baseUri(baseUrl)
-                .header("x-api-key", apiKey)
+                .spec(requestSpec)
                 .when()
-                .get("/workspaces")
+                .get("/api/users?page=2")
                 .then()
                 .log().all()
                 .assertThat()
                 .statusCode(200)
-                .body("workspaces[0].name", equalTo("My Workspace"));
+                .body("data[0].email", equalTo("michael.lawson@reqres.in"));
     }
 
     @Test
     public void extract_response() {
         Response res = given()
-                .baseUri(baseUrl)
-                .header("x-api-key", apiKey)
+                .spec(requestSpec)
                 .when()
-                .get("/workspaces")
+                .get("/api/users?page=2")
                 .then()
                 .assertThat()
                 .statusCode(200)
@@ -57,10 +53,9 @@ public class AutomateGet {
     @Test
     public void extract_single_value_from_response(){
         Response res = given()
-                .baseUri(baseUrl)
-                .header("x-api-key", apiKey)
+                .spec(requestSpec)
                 .when()
-                .get("/workspaces")
+                .get("/api/users?page=2")
                 .then()
                 .assertThat()
                 .statusCode(200)
@@ -68,63 +63,50 @@ public class AutomateGet {
                 .response();
 
         JsonPath jsonPath = new JsonPath(res.asString());
-        System.out.println("workspaces name: " + jsonPath.getString("workspaces[0].name"));
-        System.out.println("workspaces name: " + res.path("workspaces[0].type"));
+        System.out.println("First user email: " + jsonPath.getString("data[0].email"));
+        System.out.println("First user first name: " + res.path("data[0].first_name"));
 
 
     }
 
     @Test
     public void hamcrest_assert_on_extracted_response(){
-        String name = given()
-                .baseUri(baseUrl)
-                .header("x-api-key", apiKey)
+        String email = given()
+                .spec(requestSpec)
                 .when()
-                .get("/workspaces")
+                .get("/api/users?page=2")
                 .then()
                 .assertThat()
                 .statusCode(200)
                 .extract()
-                .response().path("workspaces[0].name");
-        System.out.println("workspaces name: " + name);
+                .response().path("data[0].email");
+        System.out.println("First user email: " + email);
 
-        Assert.assertEquals(name,"My Workspace");
+        Assert.assertEquals(email,"michael.lawson@reqres.in");
     }
 
     @Test
     public void hamcrest_assertions_inside_body() {
         given()
-                .baseUri(baseUrl)
-                .header("x-api-key", apiKey)
+                .spec(requestSpec)
                 .when()
-                .get("/workspaces")
+                .get("/api/users?page=2")
                 .then()
                 .assertThat()
                 .statusCode(200)
 
-                // ✅ Validate size of workspaces list
-                .body("workspaces", hasSize(1))
+                .body("data", hasSize(6))
 
-                // ✅ Validate workspace name is exactly "My Workspace"
-                .body("workspaces[0].name", equalTo("My Workspace"))
+                .body("data[0].email", equalTo("michael.lawson@reqres.in"))
 
-                // ✅ Validate workspace names list is not empty
-                .body("workspaces.name", not(empty()))
-
-                // ✅ Validate workspace names list contains specific value
-                .body("workspaces.name", hasItem("My Workspace"))
-
-                // ✅ Validate all workspace names are non-null
-                .body("workspaces.name", everyItem(notNullValue()));
+                .body("data.email", everyItem(notNullValue()));
     }
 
     @Test
     public void request_response_logging() {
         given()
-                .baseUri(baseUrl)
-                .header("x-api-key", apiKey)
+                .spec(requestSpec)
 
-                // ✅ Log full request details: headers, params, body, method, URI
                 .log().method()
                 .log().uri()
                 .log().headers()
@@ -132,15 +114,13 @@ public class AutomateGet {
                 .log().body()
 
                 .when()
-                .get("/workspaces")
+                .get("/api/users?page=2")
 
                 .then()
 
-                // ✅ Log full response body and status line
                 .log().status()
                 .log().body()
 
-                // ✅ Log only if there's an error (e.g., statusCode != 200)
                 .log().ifError()
 
                 .statusCode(200);
@@ -149,12 +129,11 @@ public class AutomateGet {
     @Test
     public void masked_logging_example() {
         given()
-                .baseUri(baseUrl)
-                .header("x-api-key", apiKey)
-                .config(config().logConfig(logConfig().blacklistHeader("x-api-key"))) // 👈 blacklists sensitive header
+                .spec(requestSpec)
+                .config(config().logConfig(logConfig().blacklistHeader("x-api-key")))
                 .log().all()
                 .when()
-                .get("/workspaces")
+                .get("/api/users?page=2")
                 .then()
                 .statusCode(200);
     }

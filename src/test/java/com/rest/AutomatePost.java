@@ -1,6 +1,5 @@
 package com.rest;
 
-import com.resreq.utils.ConfigReader;
 import io.restassured.RestAssured;
 import io.restassured.builder.RequestSpecBuilder;
 import io.restassured.builder.ResponseSpecBuilder;
@@ -8,116 +7,134 @@ import io.restassured.filter.log.LogDetail;
 import io.restassured.http.ContentType;
 import io.restassured.mapper.ObjectMapper;
 import io.restassured.response.Response;
+import io.restassured.specification.RequestSpecification;
 import io.restassured.specification.ResponseSpecification;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
 import java.io.File;
 import java.util.HashMap;
+import java.io.IOException;
 
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.matchesPattern;
+import static org.hamcrest.Matchers.notNullValue;
 
+import com.reqres.base.BaseTest;
 
 /**
  * This class demonstrates how to automate POST requests using Rest Assured.
- * Covers: BDD style, Non-BDD style, and Map-based payload for workspace creation.
+ * Covers: BDD style, Non-BDD style, and Map-based payload for user creation.
  */
-public class AutomatePost {
+public class AutomatePost extends BaseTest {
 
-    private ResponseSpecification responseSpec;
-
+    @Override
     @BeforeClass
-    public void setup() {
-        String baseUrl = ConfigReader.getValue("base.url");
-        String apiKey = ConfigReader.getValue("postman.api.key");
-
-        // Common request specification
-        RestAssured.requestSpecification = new RequestSpecBuilder()
-                .setBaseUri(baseUrl)
-                .addHeader("X-Api-Key", apiKey)
-                .setContentType(ContentType.JSON)
-                .log(LogDetail.ALL)
-                .build();
-
-        // Common response specification
-        responseSpec = new ResponseSpecBuilder()
-                .expectStatusCode(200)
-                .expectContentType(ContentType.JSON)
-                .log(LogDetail.ALL)
-                .build();
-
-        RestAssured.responseSpecification = responseSpec;
+    public void setup() throws IOException {
+        super.setup(); // Call BaseTest's setup method
     }
 
     /**
-     * BDD-style test to validate workspace creation using a JSON file.
+     * BDD-style test to validate user creation using a JSON file.
      */
     @Test
     public void validatePostRequest_BDD_Style() {
-        File file = new File("src/main/resources/CreateWorkspacePayload.json");
+        File file = new File("src/main/resources/CreateUserPayload.json"); // Assuming you have this file now
 
         given()
+                .spec(requestSpec)
+                .contentType(ContentType.JSON)
                 .body(file)
                 .when()
-                .post("/workspaces")
+                .post("/api/users")
                 .then()
                 .assertThat()
-                .body("workspace.name", equalTo("MyFirstWorkSpace5"))
-                .body("workspace.id", matchesPattern("^[a-z0-9-]+$")); // Workspace ID format
+                .statusCode(201)
+                .body("name", equalTo("morpheus"))
+                .body("job", equalTo("leader"))
+                .body("id", notNullValue())
+                .body("createdAt", notNullValue())
+                .log().all();
     }
 
     /**
-     * Non-BDD style test to validate workspace creation using a string payload.
+     * Non-BDD style test to validate user creation using a string payload.
      */
     @Test
     public void validatePostRequest_NonBDD_Style() {
         String payload = "{\n" +
-                "    \"workspace\": {\n" +
-                "        \"name\": \"MyFirstWorkSpace\",\n" +
-                "        \"type\": \"personal\",\n" +
-                "        \"description\": \"Rest Assured Created this\",\n" +
-                "        \"visibility\": \"personal\"\n" +
-                "    }\n" +
+                "    \"name\": \"Neo\",\n" +
+                "    \"job\": \"The One\"\n" +
                 "}";
 
         Response response = given()
+                .spec(requestSpec)
+                .contentType(ContentType.JSON)
                 .body(payload)
-                .post("/workspaces");
+                .post("/api/users");
 
-        assertThat("Workspace name should match",
-                response.path("workspace.name"), equalTo("MyFirstWorkSpace"));
+        assertThat("User name should match",
+                response.path("name"), equalTo("Neo"));
 
-        assertThat("Workspace ID should match expected pattern",
-                response.path("workspace.id"), matchesPattern("^[a-z0-9-]+$"));
+        assertThat("User job should match",
+                response.path("job"), equalTo("The One"));
+
+        assertThat("User ID should not be null",
+                response.path("id"), notNullValue());
+
+        assertThat("createdAt should not be null",
+                response.path("createdAt"), notNullValue());
+        
+        response.then().log().all(); // Log response for debugging
     }
 
     /**
-     * BDD-style test to create a workspace using a HashMap as payload.
+     * BDD-style test to create a user using a HashMap as payload.
      */
     @Test
     public void validatePostRequest_UsingMapPayload() {
-        HashMap<String, Object> mainObject = new HashMap<>();
-        HashMap<String, String> workspaceDetails = new HashMap<>();
+        HashMap<String, Object> userDetails = new HashMap<>();
 
-        workspaceDetails.put("name", "MyFirstWorkSpace6");
-        workspaceDetails.put("type", "personal");
-        workspaceDetails.put("description", "Rest Assured Created this");
-        workspaceDetails.put("visibility", "personal");
-
-        mainObject.put("workspace", workspaceDetails);
+        userDetails.put("name", "Trinity");
+        userDetails.put("job", "hacker");
 
         given()
-                .body(mainObject)
+                .spec(requestSpec)
+                .contentType(ContentType.JSON)
+                .body(userDetails)
                 .when()
-                .post("/workspaces")
+                .post("/api/users")
                 .then()
                 .log().all()
                 .assertThat()
-                .body("workspace.name", equalTo("MyFirstWorkSpace6"))
-                .body("workspace.id", matchesPattern("^[a-z0-9-]+$"));
+                .statusCode(201)
+                .body("name", equalTo("Trinity"))
+                .body("job", equalTo("hacker"))
+                .body("id", notNullValue())
+                .body("createdAt", notNullValue());
     }
 
+    // This test method was already in AutomatePost and is correct for reqres.in
+    // I've kept it as is, only ensuring it uses requestSpec implicitly via BaseTest.
+    @Test
+    public void postMethodBDDStyle() {
+        String requestBody = "{\n    \"name\": \"morpheus\",\n    \"job\": \"leader\"\n}";
+
+        given()
+                .spec(requestSpec) // Use inherited requestSpec
+                .contentType(ContentType.JSON)
+                .body(requestBody)
+                .when()
+                .post("/api/users")
+                .then()
+                .assertThat()
+                .statusCode(201)
+                .body("name", equalTo("morpheus"))
+                .body("job", equalTo("leader"))
+                .body("id", notNullValue())
+                .body("createdAt", notNullValue())
+                .log().all();
+    }
 }

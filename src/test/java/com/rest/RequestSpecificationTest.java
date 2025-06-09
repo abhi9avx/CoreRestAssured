@@ -1,6 +1,5 @@
 package com.rest;
 
-import com.resreq.utils.ConfigReader;
 import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
@@ -11,36 +10,34 @@ import org.testng.annotations.Test;
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.equalTo;
 
-public class RequestSpecificationTest {
+import com.reqres.base.BaseTest;
+import java.io.IOException;
 
-    private RequestSpecification reqSpec;
-    private static final String BASE_URL = System.getProperty("BASE_URL", "https://reqres.in");
+public class RequestSpecificationTest extends BaseTest {
 
+    @Override
     @BeforeClass
-    public void setup() {
-        // ✅ Reusable request specification
-        reqSpec = given()
-                .baseUri(BASE_URL)
-                .log().all(); // Optional: Log all request info
+    public void setup() throws IOException {
+        super.setup(); // Call BaseTest's setup method
     }
 
     @Test
     public void validateGetStatusCode() {
         given()
-                .spec(reqSpec) // ✅ Reuse request spec
+                .spec(requestSpec) // Use inherited requestSpec
                 .when()
                 .get("/api/users?page=2")
                 .then()
                 .log().all()
                 .assertThat()
                 .statusCode(200)
-                .body("page", equalTo(2));
+                .body("page", equalTo(2)); // Corrected for reqres.in user list response
     }
 
     @Test
     public void extract_response() {
         Response res = given()
-                .spec(reqSpec)
+                .spec(requestSpec) // Use inherited requestSpec
                 .when()
                 .get("/api/users?page=2")
                 .then()

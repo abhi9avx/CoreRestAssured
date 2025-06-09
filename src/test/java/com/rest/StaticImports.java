@@ -1,23 +1,29 @@
 package com.rest;
 
-import com.resreq.utils.ConfigReader;
 import org.testng.annotations.Test;
 import static io.restassured.RestAssured.*;
 import static org.hamcrest.Matchers.*;
 
-public class StaticImports {
+import com.reqres.base.BaseTest;
+import java.io.IOException;
+import org.testng.annotations.BeforeClass;
+
+public class StaticImports extends BaseTest {
+
+    @Override
+    @BeforeClass
+    public void setup() throws IOException {
+        super.setup(); // Call BaseTest's setup method
+    }
 
     @Test
     public void testStaticImports() {
-        String baseUrl = ConfigReader.getValue("base.url");
-        String apiKey = ConfigReader.getValue("postman.api.key");
         given()
-                .baseUri(baseUrl)
-                .header("x-api-key",apiKey)
+                .spec(requestSpec) // Use inherited requestSpec
                 .when()
-                .get("/workspaces")
+                .get("/api/users?page=2")
                 .then()
                 .statusCode(200)
-                .body("workspaces[0].name", equalTo("My Workspace")); // optional validation
+                .body("data[0].email", equalTo("michael.lawson@reqres.in")); // Adjusted for reqres.in response
     }
 }

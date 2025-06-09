@@ -6,6 +6,7 @@
     <test name="API Tests">
         <packages>
             <package name="com.reqres.test"/>
+            <package name="com.rest"/>
         </packages>
     </test>
 </suite> 
