@@ -1,4 +1,4 @@
-package com.resreq.utils;
+package com.reqres.utils;
 
 import java.io.IOException;
 import java.io.InputStream;
