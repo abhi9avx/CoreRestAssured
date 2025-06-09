@@ -1,6 +1,5 @@
 package com.rest;
 
-import com.reqres.utils.ConfigReader;
 import io.restassured.RestAssured;
 import io.restassured.builder.RequestSpecBuilder;
 import io.restassured.builder.ResponseSpecBuilder;
@@ -27,12 +26,12 @@ public class ResponseSpecificationTest {
 
     @BeforeClass
     public void setup() {
-        // ✅ Request specification
+        // Request specification
         requestSpec = new RequestSpecBuilder()
                 .setBaseUri(BASE_URL)
                 .build();
 
-        // ✅ Response specification
+        // Response specification
         responseSpec = new ResponseSpecBuilder()
                 .expectStatusCode(200)
                 .expectResponseTime(lessThan(3000L))
@@ -52,23 +51,29 @@ public class ResponseSpecificationTest {
 
     @Test
     public void validateStatusCode() {
-        // Send GET request and validate the response matches the expected specification
-        get("/workspaces")
+        given()
+                .spec(requestSpec)
+                .when()
+                .get("/api/users?page=2")
                 .then()
-                .spec(responseSpec); // Apply response spec
+                .spec(responseSpec);
     }
 
     @Test
     public void validateResponseBody() {
-        // Send GET request, extract response and validate a specific field
-        Response response = get("/workspaces")
+        Response response = given()
+                .spec(requestSpec)
+                .when()
+                .get("/api/users?page=2")
                 .then()
-                .spec(responseSpec) // Apply response spec
+                .spec(responseSpec)
                 .extract()
                 .response();
 
-        // Extract the name of the first workspace and assert it matches the expected value
-        String workspaceName = response.path("workspaces[0].name").toString();
-        assertThat("Workspace name should be 'My Workspace'", workspaceName, equalTo("My Workspace"));
+        // Verify the first user's email
+        String userEmail = response.path("data[0].email");
+        assertThat("First user's email should be 'michael.lawson@reqres.in'", 
+                  userEmail, 
+                  equalTo("michael.lawson@reqres.in"));
     }
 }
