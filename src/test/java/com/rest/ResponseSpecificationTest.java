@@ -30,15 +30,24 @@ public class ResponseSpecificationTest {
         // ✅ Request specification
         requestSpec = new RequestSpecBuilder()
                 .setBaseUri(BASE_URL)
-                .addHeader("x-api-key", ConfigReader.getValue("postman.api.key"))
                 .build();
 
         // ✅ Response specification
         responseSpec = new ResponseSpecBuilder()
                 .expectStatusCode(200)
                 .expectResponseTime(lessThan(3000L))
-                .expectBody("workspaces[0].name", equalTo("My Workspace"))
+                .expectBody("page", equalTo(2))
                 .build();
+    }
+
+    @Test
+    public void testWithResponseSpec() {
+        given()
+                .spec(requestSpec)
+                .when()
+                .get("/api/users?page=2")
+                .then()
+                .spec(responseSpec);
     }
 
     @Test

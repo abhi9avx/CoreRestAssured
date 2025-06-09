@@ -18,12 +18,9 @@ public class RequestSpecificationTest {
 
     @BeforeClass
     public void setup() {
-        String apiKey = ConfigReader.getValue("postman.api.key");
-
         // ✅ Reusable request specification
         reqSpec = given()
                 .baseUri(BASE_URL)
-                .header("x-api-key", apiKey)
                 .log().all(); // Optional: Log all request info
     }
 
@@ -32,12 +29,12 @@ public class RequestSpecificationTest {
         given()
                 .spec(reqSpec) // ✅ Reuse request spec
                 .when()
-                .get("/workspaces")
+                .get("/api/users?page=2")
                 .then()
                 .log().all()
                 .assertThat()
                 .statusCode(200)
-                .body("workspaces[0].name", equalTo("My Workspace"));
+                .body("page", equalTo(2));
     }
 
     @Test
@@ -45,7 +42,7 @@ public class RequestSpecificationTest {
         Response res = given()
                 .spec(reqSpec)
                 .when()
-                .get("/workspaces")
+                .get("/api/users?page=2")
                 .then()
                 .assertThat()
                 .statusCode(200)
