@@ -29,13 +29,16 @@ public class ResponseSpecificationTest {
         // Request specification
         requestSpec = new RequestSpecBuilder()
                 .setBaseUri(BASE_URL)
+                .setContentType(ContentType.JSON)
+                .addHeader("Accept", "application/json")
+                .log(LogDetail.ALL)
                 .build();
 
         // Response specification
         responseSpec = new ResponseSpecBuilder()
                 .expectStatusCode(200)
                 .expectResponseTime(lessThan(3000L))
-                .expectBody("page", equalTo(2))
+                .expectContentType(ContentType.JSON)
                 .build();
     }
 
@@ -46,7 +49,8 @@ public class ResponseSpecificationTest {
                 .when()
                 .get("/api/users?page=2")
                 .then()
-                .spec(responseSpec);
+                .spec(responseSpec)
+                .body("page", equalTo(2));
     }
 
     @Test
@@ -56,7 +60,8 @@ public class ResponseSpecificationTest {
                 .when()
                 .get("/api/users?page=2")
                 .then()
-                .spec(responseSpec);
+                .spec(responseSpec)
+                .body("page", equalTo(2));
     }
 
     @Test
@@ -67,6 +72,7 @@ public class ResponseSpecificationTest {
                 .get("/api/users?page=2")
                 .then()
                 .spec(responseSpec)
+                .body("page", equalTo(2))
                 .extract()
                 .response();
 

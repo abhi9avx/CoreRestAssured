@@ -75,24 +75,6 @@ public class RequestParameters extends BaseTest {
     }
 
     /**
-     * Example 3: Send a GET request with a query parameter having multiple values.
-     * This test is DISABLED as reqres.in does not directly support this pattern for user queries.
-     */
-    @Test(enabled = false) // Disabled as reqres.in doesn't support this directly
-    public void testMultipleValueQueryParameters() {
-        given()
-                .baseUri("https://postman-echo.com") // Use postman-echo.com for this specific test
-                .queryParam("foo", "bar1", "bar2", "bar3") // foo=bar1&foo=bar2&foo=bar3
-                .log().all()
-                .when()
-                .get("/get")
-                .then()
-                .log().all()
-                .assertThat()
-                .statusCode(200);
-    }
-
-    /**
      * Example 4: Send a GET request using a path parameter to retrieve a user.
      */
     @Test
@@ -128,27 +110,6 @@ public class RequestParameters extends BaseTest {
                 .statusCode(200)
                 .body("form.foo1", equalTo("bar1"))
                 .body("form.foo2", equalTo("bar2"));
-    }
-
-    /**
-     * Example 6: Upload a file along with additional JSON attributes as form-data.
-     * This test is for postman-echo.com as reqres.in does not support this directly.
-     */
-    @Test(enabled = false)
-    public void uploadFileWithAdditionalData() {
-        String attributes = "{\"name\" : \"temp.txt\", \"parent\" : {\"id\" : \"1234\"}}";
-
-        given()
-                .baseUri("https://postman-echo.com") // Use postman-echo.com for this specific test
-                .multiPart("file", new File("temp.txt")) // Upload file
-                .multiPart("attributes", attributes, "application/json") // Add metadata
-                .log().all()
-                .when()
-                .post("/post")
-                .then()
-                .log().all()
-                .assertThat()
-                .statusCode(200);
     }
 
     /**
