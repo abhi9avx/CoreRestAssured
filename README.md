@@ -34,7 +34,11 @@ A robust API testing framework built with REST Assured, TestNG, and Allure Repor
 
 3. **Run tests locally**
    ```bash
-   mvn clean test
+   # Run all tests with default configuration
+   mvn clean test -P run-all-tests
+   
+   # Or run with custom configuration
+   mvn clean test -DBASE_URL=https://reqres.in -Dsurefire.suiteXmlFiles=src/test/resources/testng.xml
    ```
 
 ## 🔧 Jenkins CI/CD Setup
@@ -69,6 +73,18 @@ After test execution, view the Allure report in Jenkins:
 2. Click on "Allure Report" in the left menu
 3. View detailed test results, trends, and analytics
 
+#### Sample Allure Report
+![Allure Report Overview](docs/reports/allure-report-overview.png)
+
+The Allure report provides:
+- Test execution summary
+- Pass/fail statistics
+- Detailed test results
+- Test duration
+- Environment details
+- Test steps and attachments
+- Historical trends
+
 ## 🏗️ Project Structure
 
 ```
@@ -83,8 +99,8 @@ After test execution, view the Allure report in Jenkins:
 │       ├── java
 │       │   └── com
 │       │       └── rest
-│   └── resources
-│       └── testng.xml
+│       └── resources
+│           └── testng.xml
 ├── pom.xml
 └── README.md
 ```
