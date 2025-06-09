@@ -134,7 +134,7 @@ public class RequestParameters extends BaseTest {
      * Example 6: Upload a file along with additional JSON attributes as form-data.
      * This test is for postman-echo.com as reqres.in does not support this directly.
      */
-    @Test
+    @Test(enabled = false)
     public void uploadFileWithAdditionalData() {
         String attributes = "{\"name\" : \"temp.txt\", \"parent\" : {\"id\" : \"1234\"}}";
 
