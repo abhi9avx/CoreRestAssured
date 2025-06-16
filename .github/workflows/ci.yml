@@ -32,7 +32,7 @@ jobs:
       - name: Build with Maven
         run: |
           # Using the same Maven command as in Jenkins
-          mvn clean test -Dsurefire.suiteXmlFiles=src/test/resources/testng.xml -Dapi.key=${API_KEY}
+          mvn clean test -Dsurefire.suiteXmlFiles=src/test/resources/testng.xml -Dapi.key=${API_KEY} -Dtest.expected.status=200 -Dtest.expected.content.type=application/json
 
       - name: Upload test results
         if: always()
