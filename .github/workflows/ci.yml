@@ -9,6 +9,9 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
+    env:
+      BASE_URL: https://reqres.in
+      API_KEY: ${{ secrets.API_KEY }}  # Add API key from GitHub Secrets
 
     steps:
       - uses: actions/checkout@v3
@@ -29,7 +32,7 @@ jobs:
       - name: Build with Maven
         run: |
           # Using the same Maven command as in Jenkins
-          mvn clean test -Dsurefire.suiteXmlFiles=src/test/resources/testng.xml
+          mvn clean test -Dsurefire.suiteXmlFiles=src/test/resources/testng.xml -Dapi.key=${API_KEY}
 
       - name: Upload test results
         if: always()
