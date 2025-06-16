@@ -15,30 +15,48 @@
 
 A robust and scalable API testing framework built with REST Assured, TestNG, and Allure Reports. This framework provides comprehensive test coverage for the ReqRes.in API, featuring modern testing practices and continuous integration capabilities.
 
-## ✨ Key Features
+## 🚀 Features
 
-- **Comprehensive API Testing**
-  - REST Assured for robust API testing
-  - TestNG for test execution and parallel testing
-  - Allure Reports for detailed test reporting
-  - Maven for dependency management
-  - JSON Schema validation for response structure verification
-  - POJO-based request/response handling
+- REST Assured for API testing
+- TestNG for test execution and assertions
+- Allure for beautiful test reporting
+- JSON Schema validation
+- Request/Response logging
+- Custom assertions
+- POJO-based request/response handling
+- Environment configuration
+- Jenkins CI/CD integration
 
-- **CI/CD Integration**
-  - Jenkins pipeline configuration
-  - Automated test execution
-  - Detailed reporting
-  - Build status notifications
+## 📋 Test Suite Organization
 
-- **Framework Features**
-  - Environment-specific configurations
-  - Comprehensive test coverage
-  - Modular test structure
-  - Reusable components
-  - JSON Schema validation
-  - Request/Response logging
-  - Custom assertions
+### Test Packages
+1. `com.reqres.test` - Main API Tests
+   - User Management
+     - Create User
+     - Get User
+     - Update User
+     - Delete User
+   - Authentication
+     - Login
+   - Resource Management
+     - Get Resource List
+     - Get User List
+
+2. `com.rest` - Example and Utility Tests
+   - Request/Response Specifications
+   - JSON Schema Validation
+   - Request Parameters
+   - Filters and Logging
+   - Static Imports
+   - BDD Style Tests
+
+### Test Categories
+- CRUD Operations
+- Authentication
+- Data Validation
+- Schema Validation
+- Response Time
+- Error Handling
 
 ## 🛠️ Prerequisites
 
@@ -216,3 +234,79 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 <div align="center">
 Made with ❤️ by Abhinav Kumar
 </div>
+
+## 📝 Test Documentation
+
+### Test Categories
+1. **User Management Tests**
+   - Create user with valid data
+   - Get user details
+   - Update user information
+   - Delete user
+
+2. **Authentication Tests**
+   - Successful login
+   - Invalid credentials
+
+3. **Resource Management Tests**
+   - Get resource list
+   - Get user list with pagination
+
+4. **Validation Tests**
+   - JSON Schema validation
+   - Response time validation
+   - Status code validation
+   - Response body validation
+
+### Best Practices
+1. **Request Specification**
+   - Base URL configuration
+   - Common headers
+   - Authentication
+   - Logging configuration
+
+2. **Response Specification**
+   - Status code validation
+   - Response time limits
+   - Content type validation
+   - Common assertions
+
+3. **Test Organization**
+   - Package structure
+   - Test naming conventions
+   - Test categories
+   - Test dependencies
+
+4. **Reporting**
+   - Allure annotations
+   - Test descriptions
+   - Severity levels
+   - Test steps
+   - Attachments
+
+## 🔍 Troubleshooting
+
+### Common Issues
+1. **Test Failures**
+   - Check API endpoint availability
+   - Verify request/response format
+   - Validate test data
+   - Check authentication
+
+2. **Build Failures**
+   - Verify Maven configuration
+   - Check dependency versions
+   - Validate TestNG XML
+   - Check Java version
+
+3. **Report Generation**
+   - Verify Allure installation
+   - Check result directory
+   - Validate report configuration
+
+## 📚 Additional Resources
+
+- [REST Assured Documentation](https://rest-assured.io/)
+- [TestNG Documentation](https://testng.org/doc/)
+- [Allure Framework Documentation](https://docs.qameta.io/allure/)
+- [Jenkins Documentation](https://www.jenkins.io/doc/)
