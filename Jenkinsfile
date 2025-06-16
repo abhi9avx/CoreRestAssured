@@ -13,9 +13,8 @@ pipeline {
                     echo "Listing current directory:"
                     ls -la
                     echo "Cleaning workspace..."
-                    rm -rf .git
-                    rm -rf *
-                    rm -rf .*
+                    # Remove all files and directories except . and ..
+                    rm -rf .[^.]* *
                     echo "Listing after cleanup:"
                     ls -la
                     echo "Cloning repository..."
