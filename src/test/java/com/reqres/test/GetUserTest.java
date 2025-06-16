@@ -19,11 +19,10 @@ public class GetUserTest extends BaseTest {
     private static final int USER_ID = 2;
     
     @Test
-    @Description("Test to verify fetching a single user by ID")
+    @Description("Test retrieving a specific user's details")
     @Severity(SeverityLevel.NORMAL)
-    @Story("Get Single User")
-    @Step("Making GET request to user API for ID={0}")
-    public void getUser() {
+    @Story("User Management")
+    public void getUserDetails() {
         // Make the GET request
         Response response = makeGetRequest(USER_ID);
         

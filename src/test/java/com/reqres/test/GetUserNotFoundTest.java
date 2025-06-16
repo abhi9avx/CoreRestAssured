@@ -16,9 +16,9 @@ public class GetUserNotFoundTest extends BaseTest {
     private static final int NON_EXISTENT_USER_ID = 23;
     
     @Test
-    @Description("Test to verify fetching a non-existent user returns 404 Not Found")
-    @Severity(SeverityLevel.CRITICAL)
-    @Story("Get Non-Existent User")
+    @Description("Test retrieving a non-existent user")
+    @Severity(SeverityLevel.NORMAL)
+    @Story("User Management")
     @Step("Making GET request for non-existent user with ID={0}")
     public void getUserNotFound() {
         // Make the GET request

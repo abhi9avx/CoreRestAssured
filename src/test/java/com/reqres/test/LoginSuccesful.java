@@ -8,10 +8,17 @@ import io.restassured.response.Response;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import static io.restassured.RestAssured.given;
+import io.qameta.allure.Description;
+import io.qameta.allure.Severity;
+import io.qameta.allure.SeverityLevel;
+import io.qameta.allure.Story;
 
 public class LoginSuccesful extends BaseTest {
     
     @Test
+    @Description("Test successful login with valid credentials")
+    @Severity(SeverityLevel.CRITICAL)
+    @Story("Authentication")
     public void testSuccessfulLogin() {
         // Create login request object
         LoginRequest loginRequest = new LoginRequest();

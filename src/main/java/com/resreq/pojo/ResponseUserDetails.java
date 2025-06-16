@@ -8,4 +8,5 @@ public class ResponseUserDetails {
     private String name;
     private String job;
     private String createdAt;
+    private String updatedAt;
 } 

@@ -5,6 +5,10 @@ import com.reqres.base.BaseTest;
 import org.testng.annotations.Test;
 import org.testng.Assert;
 import io.restassured.http.ContentType;
+import io.qameta.allure.Description;
+import io.qameta.allure.Severity;
+import io.qameta.allure.SeverityLevel;
+import io.qameta.allure.Story;
 
 import com.resreq.pojo.RequestUserDetails;
 import com.resreq.pojo.ResponseUserDetails;
@@ -13,6 +17,9 @@ import io.restassured.response.Response;
 
 public class CreateUser extends BaseTest {
     @Test
+    @Description("Test creating a new user with valid details")
+    @Severity(SeverityLevel.CRITICAL)
+    @Story("User Management")
     public void createNewUser(){
 
         RequestUserDetails userDetails = new RequestUserDetails();

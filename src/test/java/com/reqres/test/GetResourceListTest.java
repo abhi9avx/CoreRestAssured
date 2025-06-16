@@ -18,9 +18,9 @@ import io.qameta.allure.Story;
 public class GetResourceListTest extends BaseTest {
     
     @Test
-    @Description("Test to verify the resource list API functionality")
-    @Severity(SeverityLevel.CRITICAL)
-    @Story("Get Resource List")
+    @Description("Test retrieving list of resources")
+    @Severity(SeverityLevel.NORMAL)
+    @Story("Resource Management")
     public void getResourceList() {
         // Make the GET request with required header
         Response response = RestAssured

@@ -10,6 +10,11 @@ import io.qameta.allure.*;
 import static io.restassured.RestAssured.given;
 import com.reqres.base.BaseTest;
 import com.resreq.pojo.UserListResponse;
+import io.restassured.http.ContentType;
+import io.qameta.allure.Description;
+import io.qameta.allure.Severity;
+import io.qameta.allure.SeverityLevel;
+import io.qameta.allure.Story;
 
 @Feature("User List API")
 @Epic("User Management")
@@ -23,10 +28,9 @@ public class GetUserListTest extends BaseTest {
     private static final int EXPECTED_TOTAL_PAGES = 2;
     
     @Test
-    @Description("Test to verify the user list API functionality with pagination")
-    @Severity(SeverityLevel.CRITICAL)
-    @Story("Get User List with Pagination")
-    @Step("Making GET request to user list API with page={0}")
+    @Description("Test retrieving list of users with pagination")
+    @Severity(SeverityLevel.NORMAL)
+    @Story("User Management")
     public void getUserList() {
         // Make the GET request
         Response response = makeGetRequest(EXPECTED_PAGE);
