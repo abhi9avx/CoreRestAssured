@@ -9,6 +9,7 @@ pipeline {
         stage('Checkout') {
             steps {
                 sh '''
+                    rm -rf .git
                     rm -rf *
                     git clone https://github.com/abhi9avx/CoreRestAssured.git .
                     git checkout main
