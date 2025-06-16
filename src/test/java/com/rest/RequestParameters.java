@@ -2,6 +2,7 @@ package com.rest;
 
 import io.restassured.RestAssured;
 import io.restassured.config.EncoderConfig;
+import io.restassured.http.ContentType;
 import org.testng.annotations.Test;
 import org.testng.annotations.BeforeClass;
 

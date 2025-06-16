@@ -31,9 +31,13 @@ public class GetUserNotFoundTest extends BaseTest {
     @Step("Making GET request to {0}/{1}")
     private Response makeGetRequest(int userId) {
         return given()
-                .spec(requestSpec)
+                .pathParam("userId", userId)
                 .when()
-                .get(API_PATH + "/" + userId);
+                .get(API_PATH + "/{userId}")
+                .then()
+                .statusCode(404)
+                .extract()
+                .response();
     }
 
     @Step("Verifying 404 Not Found response for non-existent user")
