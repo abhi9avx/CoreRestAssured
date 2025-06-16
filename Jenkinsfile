@@ -3,7 +3,6 @@ pipeline {
 
     environment {
         BASE_URL = "https://reqres.in"
-        MAVEN_HOME = tool 'Maven'
     }
 
     stages {
@@ -21,8 +20,8 @@ pipeline {
         stage('Build & Test') {
             steps {
                 sh '''
-                    echo "Using Maven from: ${MAVEN_HOME}"
-                    ${MAVEN_HOME}/bin/mvn clean test -Dsurefire.suiteXmlFiles=src/test/resources/testng.xml
+                    echo "Using system Maven"
+                    /opt/homebrew/Cellar/maven/3.9.10/libexec/bin/mvn clean test -Dsurefire.suiteXmlFiles=src/test/resources/testng.xml
                 '''
             }
         }
