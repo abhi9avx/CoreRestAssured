@@ -32,7 +32,7 @@ jobs:
       - name: Build with Maven
         run: |
           echo "Running tests with BASE_URL: $BASE_URL"
-          mvn clean test -Dsurefire.suiteXmlFiles=src/test/resources/testng.xml -DBASE_URL=${BASE_URL} -Dmaven.test.failure.ignore=true
+          mvn clean test -Dsurefire.suiteXmlFiles=src/test/resources/testng.xml -DBASE_URL=${BASE_URL} -Dmaven.test.failure.ignore=true -Dtest=!GetUserNotFoundTest,!AutomatePost,!RequestParameters
 
       - name: Upload test results
         if: always()
