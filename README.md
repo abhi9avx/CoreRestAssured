@@ -22,6 +22,8 @@ A robust and scalable API testing framework built with REST Assured, TestNG, and
   - TestNG for test execution and parallel testing
   - Allure Reports for detailed test reporting
   - Maven for dependency management
+  - JSON Schema validation for response structure verification
+  - POJO-based request/response handling
 
 - **CI/CD Integration**
   - Jenkins pipeline configuration
@@ -34,6 +36,9 @@ A robust and scalable API testing framework built with REST Assured, TestNG, and
   - Comprehensive test coverage
   - Modular test structure
   - Reusable components
+  - JSON Schema validation
+  - Request/Response logging
+  - Custom assertions
 
 ## 🛠️ Prerequisites
 
@@ -62,6 +67,12 @@ mvn clean test -P run-all-tests
 
 # Run with custom configuration
 mvn clean test -DBASE_URL=https://reqres.in -Dsurefire.suiteXmlFiles=src/test/resources/testng.xml
+
+# Run specific test class
+mvn test -Dtest=JsonSchemaValidation
+
+# Generate and view Allure report
+mvn allure:serve
 ```
 
 ## 🔧 Jenkins CI/CD Configuration
@@ -133,6 +144,8 @@ The framework generates detailed Allure reports that provide:
 - Environment details
 - Test steps and attachments
 - Historical trends
+- JSON Schema validation results
+- Request/Response details
 
 #### Sample Report
 ![Allure Report Overview](docs/reports/allure-report-overview.png)
@@ -149,9 +162,12 @@ The framework generates detailed Allure reports that provide:
 │   └── test
 │       ├── java
 │       │   └── com
+│       │       ├── reqres
+│       │       │   └── test
 │       │       └── rest
 │       └── resources
-│           └── testng.xml
+│           ├── testng.xml
+│           └── EchoGet.json
 ├── pom.xml
 └── README.md
 ```
@@ -160,11 +176,22 @@ The framework generates detailed Allure reports that provide:
 
 The framework includes comprehensive test cases for:
 - User management
+  - Create user
+  - Update user
+  - Get user details
 - Resource management
+  - Get resource list
+  - Get single resource
 - Authentication
+  - Login
+  - Token validation
 - File uploads
 - Request parameters
 - Response validation
+  - JSON Schema validation
+  - Response body validation
+  - Status code validation
+  - Header validation
 
 ## 🤝 Contributing
 
