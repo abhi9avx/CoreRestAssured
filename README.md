@@ -150,9 +150,12 @@ Allure Report:
     allure.report.directory: target/allure-report
 ```
 
-### 4. Jenkinsfile Configuration
+## 🔧 Jenkins CI/CD Pipeline
 
-The project uses a declarative Jenkinsfile for pipeline-as-code. Here's the configuration:
+### Overview
+This project implements a robust CI/CD pipeline using Jenkins Pipeline-as-Code. The pipeline automates the build, test, and reporting processes for our REST Assured API testing framework.
+
+### Pipeline Architecture
 
 ```groovy
 pipeline {
@@ -199,18 +202,136 @@ pipeline {
 }
 ```
 
-#### Pipeline Features
-- **Environment Setup**: Configures Maven home directory
-- **Checkout Stage**: 
-  - Cleans workspace
-  - Clones repository
-  - Checks out main branch
-- **Build & Test Stage**:
-  - Runs Maven clean and test
-  - Uses TestNG XML suite
-- **Post Actions**:
-  - Displays build status
-  - Shows success message
+### Pipeline Components
+
+#### 1. Environment Configuration
+- **Agent**: Uses any available Jenkins agent
+- **Maven Setup**: Configures Maven home directory for consistent builds
+- **Workspace**: Utilizes Jenkins workspace for build operations
+
+#### 2. Pipeline Stages
+
+##### Stage 1: Checkout
+- **Purpose**: Prepares the workspace and fetches the latest code
+- **Steps**:
+  - Displays current workspace information
+  - Performs workspace cleanup
+  - Clones the repository
+  - Checks out the main branch
+- **Output**: Provides detailed logging of workspace status
+
+##### Stage 2: Build & Test
+- **Purpose**: Executes the test suite
+- **Steps**:
+  - Uses system Maven installation
+  - Runs Maven clean and test goals
+  - Executes tests using TestNG XML suite
+- **Configuration**:
+  - Uses parallel test execution
+  - Generates Allure reports
+  - Provides detailed test logs
+
+#### 3. Post-Build Actions
+- **Purpose**: Handles pipeline completion
+- **Actions**:
+  - Displays pipeline completion message
+  - Shows build success status
+  - Prepares for next pipeline run
+
+### Pipeline Features
+
+#### 🔄 Continuous Integration
+- Automatic build triggers
+- Source code management
+- Workspace management
+- Build status reporting
+
+#### 🧪 Test Automation
+- Parallel test execution
+- TestNG integration
+- Allure reporting
+- Detailed test logs
+
+#### 📊 Reporting
+- Build status tracking
+- Test execution reports
+- Allure test reports
+- Pipeline execution logs
+
+### Pipeline Benefits
+
+1. **Automation**
+   - Reduces manual intervention
+   - Ensures consistent builds
+   - Automates test execution
+
+2. **Reliability**
+   - Consistent environment setup
+   - Reproducible builds
+   - Standardized test execution
+
+3. **Visibility**
+   - Clear build status
+   - Detailed test reports
+   - Comprehensive logging
+
+4. **Maintainability**
+   - Pipeline-as-Code
+   - Version controlled
+   - Easy to modify
+
+### Pipeline Usage
+
+#### Running the Pipeline
+1. Navigate to Jenkins dashboard
+2. Select the pipeline project
+3. Click "Build Now" or wait for automatic trigger
+
+#### Monitoring Pipeline
+1. View build progress in real-time
+2. Check console output for details
+3. Access test reports after completion
+
+#### Pipeline Output
+- Build status
+- Test results
+- Allure reports
+- Console logs
+
+### Troubleshooting
+
+#### Common Issues
+1. **Build Failures**
+   - Check Maven configuration
+   - Verify test dependencies
+   - Review test execution logs
+
+2. **Workspace Issues**
+   - Clean workspace manually
+   - Check disk space
+   - Verify permissions
+
+3. **Test Failures**
+   - Review test logs
+   - Check API availability
+   - Verify test data
+
+### Best Practices
+
+1. **Pipeline Maintenance**
+   - Regular updates
+   - Version control
+   - Documentation
+
+2. **Test Management**
+   - Regular test updates
+   - Test data management
+   - Report analysis
+
+3. **Environment Management**
+   - Consistent configurations
+   - Proper cleanup
+   - Resource optimization
 
 ## 📊 Test Reports
 
