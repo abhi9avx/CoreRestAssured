@@ -8,10 +8,11 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                checkout([$class: 'GitSCM', 
-                    branches: [[name: '*/main']],
-                    userRemoteConfigs: [[url: 'https://github.com/abhi9avx/CoreRestAssured.git']]
-                ])
+                sh '''
+                    rm -rf *
+                    git clone https://github.com/abhi9avx/CoreRestAssured.git .
+                    git checkout main
+                '''
             }
         }
 
