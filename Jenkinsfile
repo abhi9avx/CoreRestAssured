@@ -8,7 +8,8 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                git 'https://github.com/abhi9avx/CoreRestAssured.git'
+                git branch: 'main',
+                    url: 'https://github.com/abhi9avx/CoreRestAssured.git'
             }
         }
 
