@@ -150,6 +150,68 @@ Allure Report:
     allure.report.directory: target/allure-report
 ```
 
+### 4. Jenkinsfile Configuration
+
+The project uses a declarative Jenkinsfile for pipeline-as-code. Here's the configuration:
+
+```groovy
+pipeline {
+    agent any
+    
+    environment {
+        MAVEN_HOME = '/opt/homebrew/Cellar/maven/3.9.10/libexec'
+    }
+    
+    stages {
+        stage('Checkout') {
+            steps {
+                sh '''
+                    echo "Current directory: ${WORKSPACE}"
+                    echo "Listing current directory:"
+                    ls -la
+                    echo "Cleaning workspace..."
+                    rm -rf .[^.]* *
+                    echo "Listing after cleanup:"
+                    ls -la
+                    echo "Cloning repository..."
+                    git clone https://github.com/abhi9avx/CoreRestAssured.git .
+                    git checkout main
+                '''
+            }
+        }
+        
+        stage('Build & Test') {
+            steps {
+                sh '''
+                    echo "Using system Maven"
+                    ${MAVEN_HOME}/bin/mvn clean test -Dsurefire.suiteXmlFiles=src/test/resources/testng.xml
+                '''
+            }
+        }
+    }
+    
+    post {
+        always {
+            echo "Pipeline finished"
+            echo "Build succeeded 🎉"
+        }
+    }
+}
+```
+
+#### Pipeline Features
+- **Environment Setup**: Configures Maven home directory
+- **Checkout Stage**: 
+  - Cleans workspace
+  - Clones repository
+  - Checks out main branch
+- **Build & Test Stage**:
+  - Runs Maven clean and test
+  - Uses TestNG XML suite
+- **Post Actions**:
+  - Displays build status
+  - Shows success message
+
 ## 📊 Test Reports
 
 ### Allure Reports
