@@ -20,8 +20,7 @@
         "accept-encoding": { "type": "string" }
       },
       "required": [
-        "host", "x-request-start", "connection", "x-forwarded-proto",
-        "x-forwarded-port", "x-amzn-trace-id", "accept", "user-agent", "accept-encoding"
+        "host", "accept", "user-agent", "accept-encoding"
       ]
     },
     "url": {
