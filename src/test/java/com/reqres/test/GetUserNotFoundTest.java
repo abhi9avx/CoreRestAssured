@@ -31,6 +31,7 @@ public class GetUserNotFoundTest extends BaseTest {
     @Step("Making GET request to {0}/{1}")
     private Response makeGetRequest(int userId) {
         return given()
+                .spec(requestSpec)  // Use the requestSpec from BaseTest
                 .pathParam("userId", userId)
                 .when()
                 .get(API_PATH + "/{userId}")
