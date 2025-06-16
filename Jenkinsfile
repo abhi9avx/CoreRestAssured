@@ -9,8 +9,16 @@ pipeline {
         stage('Checkout') {
             steps {
                 sh '''
+                    echo "Current directory: $(pwd)"
+                    echo "Listing current directory:"
+                    ls -la
+                    echo "Cleaning workspace..."
                     rm -rf .git
                     rm -rf *
+                    rm -rf .*
+                    echo "Listing after cleanup:"
+                    ls -la
+                    echo "Cloning repository..."
                     git clone https://github.com/abhi9avx/CoreRestAssured.git .
                     git checkout main
                 '''
