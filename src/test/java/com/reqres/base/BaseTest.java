@@ -12,7 +12,17 @@ import java.io.PrintStream;
 public class BaseTest {
     protected RequestSpecification requestSpec;
     protected static final String BASE_URL = System.getProperty("BASE_URL", "https://reqres.in");
-    private static final String API_KEY = "reqres-free-v1";
+    
+    // Use environment variable if available and not empty, otherwise use hardcoded fallback
+    private static final String API_KEY = getApiKey();
+    
+    private static String getApiKey() {
+        String envApiKey = System.getenv("API_KEY");
+        if (envApiKey != null && !envApiKey.trim().isEmpty()) {
+            return envApiKey.trim();
+        }
+        return "reqres-free-v1"; // Fallback to known working key
+    }
 
     @BeforeClass
     public void setup() throws IOException {
@@ -49,10 +59,11 @@ public class BaseTest {
             RestAssured.enableLoggingOfRequestAndResponseIfValidationFails();
         }
 
-        // Create request specification with API key
+        // Create request specification with API key authentication
         requestSpec = new RequestSpecBuilder()
                 .setBaseUri(BASE_URL)
                 .addHeader("x-api-key", API_KEY)
+                .addHeader("Accept", "application/json")
                 .build();
     }
 } 
