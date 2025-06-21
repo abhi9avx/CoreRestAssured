@@ -26,6 +26,13 @@ A robust and scalable API testing framework built with REST Assured, TestNG, and
 - POJO-based request/response handling
 - Environment configuration
 - Jenkins CI/CD integration
+- **RESTful API Testing** with RestAssured
+- **TestNG Integration** for test organization
+- **Allure Reporting** for beautiful test reports
+- **CI/CD Pipeline** with GitHub Actions
+- **Docker Support** for containerized testing
+- **Parallel Test Execution**
+- **Environment Configuration Management**
 
 ## 📋 Test Suite Organization
 
@@ -335,21 +342,31 @@ pipeline {
 
 ## 📊 Test Reports
 
-### Allure Reports
-The framework generates detailed Allure reports that provide:
+### **🌐 Live Reports (Recommended)**
+Our test reports are automatically generated and deployed with every CI run:
 
-- Test execution summary
-- Pass/fail statistics
-- Detailed test results
-- Test duration
-- Environment details
-- Test steps and attachments
-- Historical trends
-- JSON Schema validation results
-- Request/Response details
+- **📈 Latest Test Reports**: `https://abhi9avx.github.io/CoreRestAssured/reports/latest/`
+- **🔄 Auto-updated**: Reports refresh with every main branch push
+- **📱 Mobile-friendly**: Responsive design for all devices
+- **📊 Interactive Dashboard**: Detailed test trends and analytics
 
-#### Sample Report
-![Allure Report Overview](docs/reports/allure-report-overview.png)
+### **📦 Downloadable Reports**
+For every CI run, reports are also available as artifacts:
+- **Allure HTML Report**: Download from GitHub Actions artifacts
+- **TestNG XML Results**: Raw test data for integration
+- **Execution Logs**: Detailed debugging information
+
+### **🛠️ Generate Reports Locally**
+```bash
+# Run tests and generate report
+mvn clean test allure:report
+
+# Serve report locally (opens browser automatically)
+mvn allure:serve
+
+# Or open the static report
+open target/site/allure-maven-plugin/index.html
+```
 
 ## 🏗️ Project Structure
 ```
@@ -504,8 +521,9 @@ This project uses GitHub Actions for continuous integration and testing. The wor
 - ✅ Java 11 setup with Temurin distribution
 - ✅ Maven caching for faster builds
 - ✅ TestNG test execution
-- ✅ Allure report generation
+- ✅ Allure report generation & deployment
 - ✅ Test results artifacts upload
+- ✅ GitHub Pages integration for live reports
 - ✅ Comprehensive error logging
 
 ### Running Tests Locally:
@@ -516,6 +534,9 @@ mvn clean compile test-compile
 # Run all tests
 mvn test -Dsurefire.suiteXmlFiles=src/test/resources/testng.xml
 
+# Run specific test
+mvn test -Dtest=CreateUser
+
 # Generate Allure report
 mvn allure:report
 
@@ -525,7 +546,7 @@ mvn allure:serve
 
 ### Environment Variables:
 - `BASE_URL`: API base URL (defaults to https://reqres.in)
-- `API_KEY`: API key (configured in GitHub Secrets)
+- `API_KEY`: API authentication key (auto-fallback to default)
 
 ### Troubleshooting CI Issues:
 1. Check that all test classes are in the correct packages (`com.reqres.test` and `com.rest`)

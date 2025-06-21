@@ -44,12 +44,19 @@ jobs:
           mvn test -Dsurefire.suiteXmlFiles=src/test/resources/testng.xml
 
       - name: Generate Allure Report
-        if: always()
         run: |
           echo "Generating Allure report..."
           mvn allure:report
 
-      - name: Upload test results
+      - name: Deploy Allure Report to GitHub Pages
+        if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: target/site/allure-maven-plugin
+          destination_dir: reports/latest
+          
+      - name: Upload Test Results
         if: always()
         uses: actions/upload-artifact@v4
         with:
@@ -57,6 +64,7 @@ jobs:
           path: |
             target/surefire-reports/
             target/allure-results/
+          retention-days: 30
 
       - name: Upload Allure Report
         if: always()
@@ -64,6 +72,7 @@ jobs:
         with:
           name: allure-report
           path: target/site/allure-maven-plugin/
+          retention-days: 30
 
       - name: Upload logs on failure
         if: failure()
