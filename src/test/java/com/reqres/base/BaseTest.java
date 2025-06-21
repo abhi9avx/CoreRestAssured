@@ -39,24 +39,15 @@ public class BaseTest {
                     logDir.mkdirs();
                 }
                 
-                // Configure RestAssured logging to file only if not in CI
+                // Local: Log to file only, no console output
                 RestAssured.config = RestAssured.config()
                     .logConfig(RestAssured.config().getLogConfig()
-                        .enableLoggingOfRequestAndResponseIfValidationFails()
-                        .enablePrettyPrinting(true)
                         .defaultStream(new PrintStream("src/test/resources/logs/reqres_test.log")));
-            } else {
-                // In CI environment, just enable console logging
-                RestAssured.enableLoggingOfRequestAndResponseIfValidationFails();
-                RestAssured.config = RestAssured.config()
-                    .logConfig(RestAssured.config().getLogConfig()
-                        .enableLoggingOfRequestAndResponseIfValidationFails()
-                        .enablePrettyPrinting(true));
             }
+            // CI: Completely silent - no HTTP logging at all
+            
         } catch (FileNotFoundException e) {
-            // Fallback to console logging if file creation fails
-            System.out.println("Could not create log file, using console logging: " + e.getMessage());
-            RestAssured.enableLoggingOfRequestAndResponseIfValidationFails();
+            // Fallback: completely silent execution
         }
 
         // Create request specification with API key authentication
