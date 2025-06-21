@@ -8,6 +8,7 @@ import io.restassured.http.ContentType;
 import io.restassured.specification.ResponseSpecification;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
+import org.testng.annotations.AfterClass;
 
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.equalTo;
@@ -30,14 +31,21 @@ public class AutomatePut extends BaseTest {
     public void setup() throws IOException {
         super.setup(); // Call BaseTest's setup method
 
-        // Setup response specification (can be made more generic in BaseTest if many tests use it)
+        // Setup response specification (used locally, NOT globally)
         responseSpec = new ResponseSpecBuilder()
                 .expectStatusCode(200)
                 .expectContentType(ContentType.JSON)
                 .log(LogDetail.ALL)
                 .build();
 
-        RestAssured.responseSpecification = responseSpec;
+        // DO NOT set global response specification - this was causing the CI failures
+        // RestAssured.responseSpecification = responseSpec; // REMOVED
+    }
+
+    @AfterClass
+    public void tearDown() {
+        // Ensure no global response specification is left set
+        RestAssured.responseSpecification = null;
     }
 
     /**
@@ -65,7 +73,7 @@ public class AutomatePut extends BaseTest {
                 .put("/api/users/{id}")
                 .then()
                 .log().all()
-                .spec(responseSpec)
+                .spec(responseSpec) // Use response spec locally, not globally
                 .body("name", equalTo("morpheus"))
                 .body("job", equalTo("zion resident"))
                 .body("updatedAt", matchesPattern("^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}.\\d{3}Z$"));
