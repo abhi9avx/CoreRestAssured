@@ -1,43 +1,44 @@
 # CoreRestAssured - Enterprise API Testing Framework
 
 [![CI Status](https://github.com/abhi9avx/CoreRestAssured/workflows/CoreRestAssured%20CI/badge.svg)](https://github.com/abhi9avx/CoreRestAssured/actions)
-[![Test Reports](https://img.shields.io/badge/Reports-Live-brightgreen)](https://abhi9avx.github.io/CoreRestAssured/reports/latest/)
+[![Test Reports](https://img.shields.io/badge/Reports-Live-brightgreen)](https://abhi9avx.github.io/CoreRestAssured/)
 [![Java](https://img.shields.io/badge/Java-11+-orange.svg)](https://openjdk.java.net/)
 [![Maven](https://img.shields.io/badge/Maven-3.6+-blue.svg)](https://maven.apache.org/)
 [![RestAssured](https://img.shields.io/badge/RestAssured-5.5.1-blue.svg)](https://rest-assured.io/)
 [![TestNG](https://img.shields.io/badge/TestNG-7.11.0-green.svg)](https://testng.org/)
 
-## 🚀 Overview
+## Overview
 
-**CoreRestAssured** is a comprehensive, enterprise-grade REST API testing framework built with modern testing practices and industry standards. It provides a robust foundation for automated API testing with advanced reporting, CI/CD integration, and scalable test architecture.
+CoreRestAssured is a comprehensive, enterprise-grade REST API testing framework built with modern testing practices and industry standards. It provides a robust foundation for automated API testing with advanced reporting, CI/CD integration, and scalable test architecture.
 
-### Key Features
+## Features
 
-- **🏗️ Modular Architecture**: Clean separation of concerns with POJO models, utilities, and test layers
-- **🔧 Advanced Configuration**: Environment-based configuration management with fallback mechanisms  
-- **📊 Rich Reporting**: Integrated Allure reporting with interactive dashboards and trend analysis
-- **🚀 CI/CD Ready**: GitHub Actions integration with automated test execution and report deployment
-- **🎯 BDD Support**: Behavior-driven development approach with Given-When-Then patterns
-- **⚡ Parallel Execution**: TestNG-powered parallel test execution for faster feedback
-- **🔍 Comprehensive Validation**: JSON schema validation, response time assertions, and data integrity checks
-- **📝 Detailed Logging**: Configurable logging with environment-aware output management
+- **Modular Architecture**: Clean separation of concerns with POJO models, utilities, and test layers
+- **Advanced Configuration**: Environment-based configuration management with fallback mechanisms  
+- **Rich Reporting**: Integrated Allure reporting with interactive dashboards and trend analysis
+- **CI/CD Ready**: GitHub Actions integration with automated test execution and report deployment
+- **BDD Support**: Behavior-driven development approach with Given-When-Then patterns
+- **Parallel Execution**: TestNG-powered parallel test execution for faster feedback
+- **Comprehensive Validation**: JSON schema validation, response time assertions, and data integrity checks
+- **Detailed Logging**: Configurable logging with environment-aware output management
 
-## 📋 Table of Contents
+## Table of Contents
 
-- [Quick Start](#-quick-start)
-- [Project Architecture](#-project-architecture)
-- [Framework Components](#-framework-components)
-- [Test Categories](#-test-categories)
-- [Configuration Management](#-configuration-management)
-- [Reporting & Analytics](#-reporting--analytics)
-- [CI/CD Pipeline](#-cicd-pipeline)
-- [Development Guide](#-development-guide)
-- [Best Practices](#-best-practices)
-- [Troubleshooting](#-troubleshooting)
+- [Quick Start](#quick-start)
+- [Project Architecture](#project-architecture)
+- [Framework Components](#framework-components)
+- [Test Categories](#test-categories)
+- [Configuration Management](#configuration-management)
+- [Reporting & Analytics](#reporting--analytics)
+- [CI/CD Pipeline](#cicd-pipeline)
+- [Development Guide](#development-guide)
+- [Best Practices](#best-practices)
+- [Troubleshooting](#troubleshooting)
 
-## 🏃 Quick Start
+## Quick Start
 
 ### Prerequisites
+
 - **Java 11+** (OpenJDK or Oracle JDK)
 - **Maven 3.6+** for dependency management
 - **Git** for version control
@@ -70,7 +71,7 @@ export BASE_URL=https://your-api-endpoint.com
 export API_KEY=your-api-key-here
 ```
 
-## 🏗️ Project Architecture
+## Project Architecture
 
 ```
 CoreRestAssured/
@@ -124,21 +125,24 @@ CoreRestAssured/
     └── logs/                  # Test execution logs
 ```
 
-## 🧩 Framework Components
+## Framework Components
 
 ### 1. Base Test Infrastructure (`BaseTest.java`)
+
 - **Environment Detection**: Automatically detects CI/local environments
 - **Authentication Management**: Configurable API key authentication with fallbacks
 - **Request Specification**: Pre-configured request specifications with headers and base URI
 - **Logging Configuration**: Environment-aware logging (file-based locally, silent in CI)
 
 ### 2. POJO Models (`com.resreq.pojo`)
+
 - **Type Safety**: Strongly-typed data models for all API entities
 - **Lombok Integration**: Automated getter/setter generation for cleaner code
 - **JSON Mapping**: Jackson-based serialization/deserialization
 - **Validation Support**: Built-in validation for request/response data integrity
 
 ### 3. Utility Classes (`com.resreq.utils`)
+
 - **ConfigReader**: Properties-based configuration management
 - **Environment Variables**: Support for runtime configuration overrides
 - **Fallback Mechanisms**: Graceful degradation when configurations are missing
@@ -146,6 +150,7 @@ CoreRestAssured/
 ### 4. Test Categories
 
 #### Functional API Tests (`com.reqres.test`)
+
 - **User Management**: Complete CRUD operations for user entities
 - **Authentication**: Login/logout flow validation
 - **Resource Management**: Resource listing and retrieval
@@ -153,6 +158,7 @@ CoreRestAssured/
 - **Data Validation**: Response structure and content verification
 
 #### RestAssured Feature Examples (`com.rest`)
+
 - **HTTP Methods**: Comprehensive examples for GET, POST, PUT, DELETE
 - **Request Specifications**: Reusable request configurations
 - **Response Specifications**: Standardized response validation
@@ -161,22 +167,23 @@ CoreRestAssured/
 - **Method Chaining**: Fluent API usage patterns
 - **Filters**: Request/response logging and modification
 
-## 🎯 Test Categories & Coverage
+## Test Categories & Coverage
 
-| **Category** | **Test Count** | **Coverage** | **Description** |
-|--------------|----------------|--------------|-----------------|
-| **User Management** | 15 | CRUD Operations | Create, read, update, delete user entities |
-| **Authentication** | 3 | Login/Logout | Session management and token validation |
-| **Data Validation** | 8 | Schema/Content | JSON schema validation and data integrity |
-| **Error Handling** | 5 | 4xx/5xx Responses | Negative testing and error scenarios |
-| **Performance** | 7 | Response Time | SLA validation and performance benchmarks |
-| **Integration** | 12 | End-to-End | Complete workflow validation |
+| Category | Test Count | Coverage | Description |
+|----------|------------|----------|-------------|
+| User Management | 15 | CRUD Operations | Create, read, update, delete user entities |
+| Authentication | 3 | Login/Logout | Session management and token validation |
+| Data Validation | 8 | Schema/Content | JSON schema validation and data integrity |
+| Error Handling | 5 | 4xx/5xx Responses | Negative testing and error scenarios |
+| Performance | 7 | Response Time | SLA validation and performance benchmarks |
+| Integration | 12 | End-to-End | Complete workflow validation |
 
 **Total Test Coverage**: 50+ automated test scenarios
 
-## ⚙️ Configuration Management
+## Configuration Management
 
 ### Environment Variables
+
 ```bash
 # Primary configuration
 BASE_URL=https://api.example.com    # Target API endpoint
@@ -189,31 +196,37 @@ RETRY_COUNT=3                      # Failed request retry attempts
 ```
 
 ### Configuration Hierarchy
+
 1. **Environment Variables** (Highest priority)
 2. **System Properties** (`-Dproperty=value`)
 3. **Configuration Files** (`config.properties`)
 4. **Default Values** (Fallback)
 
 ### BaseTest Configuration Features
+
 - **Automatic Environment Detection**: CI vs Local execution
 - **Dynamic Authentication**: Multiple auth strategies
 - **Logging Management**: Environment-appropriate log levels
 - **Request Specification**: Centralized request configuration
 
-## 📊 Reporting & Analytics
+## Reporting & Analytics
 
 ### Live Test Reports
-🔗 **Access Reports**: [https://abhi9avx.github.io/CoreRestAssured/reports/latest/](https://abhi9avx.github.io/CoreRestAssured/reports/latest/)
+
+- **Main Dashboard**: [https://abhi9avx.github.io/CoreRestAssured/](https://abhi9avx.github.io/CoreRestAssured/)
+- **Latest Test Report**: [https://abhi9avx.github.io/CoreRestAssured/reports/latest/](https://abhi9avx.github.io/CoreRestAssured/reports/latest/)
 
 ### Report Features
-- **📈 Interactive Dashboards**: Real-time test execution metrics
-- **📱 Mobile Responsive**: Stakeholder-friendly mobile interface  
-- **🔍 Detailed Analysis**: Step-by-step test execution breakdown
-- **📊 Trend Analysis**: Historical test performance tracking
-- **🚨 Failure Analysis**: Root cause analysis with stack traces
-- **⏱️ Performance Metrics**: Response time trends and SLA monitoring
+
+- **Interactive Dashboards**: Real-time test execution metrics
+- **Mobile Responsive**: Stakeholder-friendly mobile interface  
+- **Detailed Analysis**: Step-by-step test execution breakdown
+- **Trend Analysis**: Historical test performance tracking
+- **Failure Analysis**: Root cause analysis with stack traces
+- **Performance Metrics**: Response time trends and SLA monitoring
 
 ### Local Report Generation
+
 ```bash
 # Generate Allure report
 mvn allure:generate
@@ -225,16 +238,18 @@ mvn allure:serve
 mvn allure:open
 ```
 
-## 🚀 CI/CD Pipeline
+## CI/CD Pipeline
 
 ### GitHub Actions Integration
-- **🔄 Automated Triggers**: Push to main, Pull requests
-- **⚡ Fast Execution**: ~30-40 seconds average runtime
-- **📊 Auto-deployment**: Reports deployed to GitHub Pages
-- **🏗️ Build Matrix**: Multi-environment testing support
-- **📦 Artifact Management**: 30-day test artifact retention
+
+- **Automated Triggers**: Push to main, Pull requests
+- **Fast Execution**: ~30-40 seconds average runtime
+- **Auto-deployment**: Reports deployed to GitHub Pages
+- **Build Matrix**: Multi-environment testing support
+- **Artifact Management**: 30-day test artifact retention
 
 ### Pipeline Stages
+
 1. **Environment Setup**: JDK 11, Maven, dependencies
 2. **Code Compilation**: Source and test compilation
 3. **Test Execution**: Parallel test suite execution
@@ -243,12 +258,13 @@ mvn allure:open
 6. **Notification**: Slack/email notifications (configurable)
 
 ### Quality Gates
+
 - ✅ **All tests must pass** for merge approval
 - ✅ **Code coverage** threshold enforcement
 - ✅ **Performance benchmarks** must be met
 - ✅ **Security scanning** for dependencies
 
-## 💻 Development Guide
+## Development Guide
 
 ### Running Tests
 
@@ -272,6 +288,7 @@ mvn clean compile -DskipTests
 ### Test Development Patterns
 
 #### 1. BDD-Style Test Structure
+
 ```java
 @Test
 @Description("Create user with valid details")
@@ -298,6 +315,7 @@ public void createUserWithValidDetails() {
 ```
 
 #### 2. POJO-Based Data Handling
+
 ```java
 // Serialize request
 RequestUserDetails request = new RequestUserDetails();
@@ -332,33 +350,37 @@ mvn dependency:tree
 mvn test-compile
 ```
 
-## 🎯 Best Practices
+## Best Practices
 
 ### Test Design Principles
-- **🔄 Idempotent Tests**: Tests should be repeatable without side effects
-- **🎯 Single Responsibility**: Each test validates one specific behavior
-- **📊 Data-Driven**: Use external data sources for test parameterization
-- **🚫 No Hard Dependencies**: Tests should be independent and executable in any order
-- **⚡ Fast Feedback**: Optimize for quick execution and early failure detection
+
+- **Idempotent Tests**: Tests should be repeatable without side effects
+- **Single Responsibility**: Each test validates one specific behavior
+- **Data-Driven**: Use external data sources for test parameterization
+- **No Hard Dependencies**: Tests should be independent and executable in any order
+- **Fast Feedback**: Optimize for quick execution and early failure detection
 
 ### Code Quality Standards
-- **📝 Meaningful Names**: Clear, descriptive test and method names
-- **🏗️ DRY Principle**: Reusable components and utilities
-- **🔒 Type Safety**: Leverage POJO models and strong typing
-- **📚 Documentation**: Comprehensive Allure annotations and comments
-- **🧪 Test Coverage**: Aim for high functional coverage over line coverage
+
+- **Meaningful Names**: Clear, descriptive test and method names
+- **DRY Principle**: Reusable components and utilities
+- **Type Safety**: Leverage POJO models and strong typing
+- **Documentation**: Comprehensive Allure annotations and comments
+- **Test Coverage**: Aim for high functional coverage over line coverage
 
 ### Performance Optimization
-- **⚡ Parallel Execution**: Utilize TestNG parallel capabilities
-- **🎯 Selective Testing**: Use TestNG groups for targeted test execution
-- **📦 Resource Management**: Proper cleanup and resource disposal
-- **🚀 CI Optimization**: Optimize pipeline for faster feedback cycles
 
-## 🔧 Troubleshooting
+- **Parallel Execution**: Utilize TestNG parallel capabilities
+- **Selective Testing**: Use TestNG groups for targeted test execution
+- **Resource Management**: Proper cleanup and resource disposal
+- **CI Optimization**: Optimize pipeline for faster feedback cycles
+
+## Troubleshooting
 
 ### Common Issues & Solutions
 
 #### Authentication Failures
+
 ```bash
 # Verify API key configuration
 echo $API_KEY
@@ -370,6 +392,7 @@ curl -H "x-api-key: $API_KEY" https://reqres.in/api/users
 ```
 
 #### Test Execution Issues
+
 ```bash
 # Clear Maven cache
 mvn dependency:purge-local-repository
@@ -382,6 +405,7 @@ mvn surefire:test
 ```
 
 #### Report Generation Problems
+
 ```bash
 # Clean Allure results
 rm -rf target/allure-results target/site
@@ -391,6 +415,7 @@ mvn clean test allure:report
 ```
 
 ### Debug Mode
+
 ```bash
 # Enable debug logging
 export LOG_LEVEL=DEBUG
@@ -400,9 +425,10 @@ mvn test -Dlog4j.debug=true
 mvn test -X -e
 ```
 
-## 🤝 Contributing
+## Contributing
 
 ### Development Workflow
+
 1. **Fork Repository**: Create personal fork
 2. **Feature Branch**: `git checkout -b feature/new-test-suite`
 3. **Development**: Implement features following coding standards
@@ -411,29 +437,13 @@ mvn test -X -e
 6. **Pull Request**: Submit PR with detailed description
 
 ### Code Review Checklist
+
 - ✅ All tests pass locally and in CI
 - ✅ Code follows established patterns and conventions
 - ✅ Proper error handling and logging
 - ✅ Allure annotations for reporting
 - ✅ Updated documentation where necessary
 
-## 📈 Roadmap
-
-### Upcoming Features
-- **🔐 OAuth 2.0 Support**: Enhanced authentication mechanisms
-- **🌐 Multi-Environment**: Support for dev/staging/prod environments
-- **📊 Performance Testing**: JMeter integration for load testing
-- **🔍 API Mocking**: WireMock integration for contract testing
-- **📱 Mobile API Testing**: Support for mobile-specific API patterns
-
 ---
 
-## 📞 Support & Contact
-
-- **📧 Issues**: [GitHub Issues](https://github.com/abhi9avx/CoreRestAssured/issues)
-- **📖 Documentation**: [Wiki](https://github.com/abhi9avx/CoreRestAssured/wiki)
-- **💬 Discussions**: [GitHub Discussions](https://github.com/abhi9avx/CoreRestAssured/discussions)
-
----
-
-**Built with ❤️ for enterprise-grade API testing excellence**
+Built with ❤️ by Abhinav for API testing excellence 
