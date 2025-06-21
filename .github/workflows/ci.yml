@@ -1,4 +1,4 @@
-name: CoreRestAssured CI
+name: CI Pipeline
 
 on:
   push:
@@ -6,94 +6,30 @@ on:
   pull_request:
     branches: [main]
 
-# Add permissions for GitHub Pages deployment
-permissions:
-  contents: read
-  pages: write
-  id-token: write
-
 jobs:
   test:
     runs-on: ubuntu-latest
-    env:
-      BASE_URL: https://reqres.in
-
+    
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout code
+        uses: actions/checkout@v4
 
-      - name: Set up JDK 11
+      - name: Set up Java 11
         uses: actions/setup-java@v4
         with:
           distribution: 'temurin'
           java-version: '11'
-          cache: 'maven'
 
-      - name: Display Java version
-        run: java -version
+      - name: Build project
+        run: mvn clean compile
 
-      - name: Display Maven version
-        run: mvn -version
+      - name: Run tests
+        run: mvn test -Dsurefire.suiteXmlFiles=src/test/resources/testng.xml
 
-      - name: Verify TestNG configuration file exists
-        run: |
-          echo "Checking for TestNG configuration files..."
-          ls -la testng.xml || echo "Root testng.xml not found"
-          ls -la src/test/resources/testng.xml || echo "TestNG XML not found"
-
-      - name: Build with Maven
-        run: |
-          echo "Building and running tests..."
-          mvn clean compile test-compile
-          echo "Running tests with specific TestNG suite..."
-          mvn test -Dsurefire.suiteXmlFiles=src/test/resources/testng.xml
-
-      - name: Generate Allure Report
-        run: |
-          echo "Generating Allure report..."
-          mvn allure:report
-
-      - name: Setup Pages
-        if: github.ref == 'refs/heads/main' && github.event_name == 'push'
-        uses: actions/configure-pages@v4
-        with:
-          enablement: true
-
-      - name: Upload Pages Artifact
-        if: github.ref == 'refs/heads/main' && github.event_name == 'push'
-        uses: actions/upload-pages-artifact@v3
-        with:
-          path: target/site/allure-maven-plugin
-
-      - name: Deploy to GitHub Pages
-        if: github.ref == 'refs/heads/main' && github.event_name == 'push'
-        id: deployment
-        uses: actions/deploy-pages@v4
-          
-      - name: Upload Test Results
+      - name: Upload test results
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: test-results
-          path: |
-            target/surefire-reports/
-            target/allure-results/
-          retention-days: 30
-
-      - name: Upload Allure Report
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: allure-report
-          path: target/site/allure-maven-plugin/
-          retention-days: 30
-
-      - name: Upload logs on failure
-        if: failure()
-        uses: actions/upload-artifact@v4
-        with:
-          name: build-logs
-          path: |
-            target/surefire-reports/
-            *.log
-          retention-days: 7
+          path: target/surefire-reports/
 
