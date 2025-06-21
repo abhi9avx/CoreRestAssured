@@ -18,23 +18,19 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.lessThan;
 
-public class ResponseSpecificationTest {
+import com.reqres.base.BaseTest;
+import java.io.IOException;
 
-    private RequestSpecification requestSpec;
+public class ResponseSpecificationTest extends BaseTest {
+
     private ResponseSpecification responseSpec;
-    private static final String BASE_URL = System.getProperty("BASE_URL", "https://reqres.in");
 
+    @Override
     @BeforeClass
-    public void setup() {
-        // Request specification
-        requestSpec = new RequestSpecBuilder()
-                .setBaseUri(BASE_URL)
-                .setContentType(ContentType.JSON)
-                .addHeader("Accept", "application/json")
-                .log(LogDetail.ALL)
-                .build();
-
-        // Response specification
+    public void setup() throws IOException {
+        super.setup(); // Call BaseTest's setup method to get proper authentication
+        
+        // Response specification (requestSpec is inherited from BaseTest)
         responseSpec = new ResponseSpecBuilder()
                 .expectStatusCode(200)
                 .expectResponseTime(lessThan(3000L))
@@ -45,7 +41,7 @@ public class ResponseSpecificationTest {
     @Test
     public void testWithResponseSpec() {
         given()
-                .spec(requestSpec)
+                .spec(requestSpec) // Use inherited requestSpec with proper authentication
                 .when()
                 .get("/api/users?page=2")
                 .then()
@@ -56,7 +52,7 @@ public class ResponseSpecificationTest {
     @Test
     public void validateStatusCode() {
         given()
-                .spec(requestSpec)
+                .spec(requestSpec) // Use inherited requestSpec with proper authentication
                 .when()
                 .get("/api/users?page=2")
                 .then()
@@ -67,7 +63,7 @@ public class ResponseSpecificationTest {
     @Test
     public void validateResponseBody() {
         Response response = given()
-                .spec(requestSpec)
+                .spec(requestSpec) // Use inherited requestSpec with proper authentication
                 .when()
                 .get("/api/users?page=2")
                 .then()
@@ -81,5 +77,7 @@ public class ResponseSpecificationTest {
         assertThat("First user's email should be 'michael.lawson@reqres.in'", 
                   userEmail, 
                   equalTo("michael.lawson@reqres.in"));
+        // Removed debug print statement for clean console output
+        // System.out.println("Response: " + res.asString());
     }
 }
