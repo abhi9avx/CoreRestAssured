@@ -46,6 +46,7 @@ public class RequestSpecificationTest extends BaseTest {
                 .extract()
                 .response();
 
-        System.out.println("Response: " + res.asString());
+        // Removed debug print statement for clean console output
+        // System.out.println("Response: " + res.asString());
     }
 }

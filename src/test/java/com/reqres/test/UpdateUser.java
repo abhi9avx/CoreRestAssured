@@ -46,9 +46,5 @@ public class UpdateUser extends BaseTest {
         Assert.assertEquals(userResponse.getName(), userDetails.getName());
         Assert.assertEquals(userResponse.getJob(), userDetails.getJob());
         Assert.assertNotNull(userResponse.getUpdatedAt());
-
-        System.out.println("Updated Name: " + userResponse.getName());
-        System.out.println("Updated Job: " + userResponse.getJob());
-        System.out.println("Updated At: " + userResponse.getUpdatedAt());
     }
 }

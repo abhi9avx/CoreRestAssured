@@ -48,7 +48,8 @@ public class AutomateGet extends BaseTest {
                 .extract()
                 .response();
 
-        System.out.println("Response: " + res.asString());
+        // Removed debug print statement for clean console output
+        // System.out.println("Response: " + res.asString());
     }
     @Test
     public void extract_single_value_from_response(){
@@ -63,8 +64,9 @@ public class AutomateGet extends BaseTest {
                 .response();
 
         JsonPath jsonPath = new JsonPath(res.asString());
-        System.out.println("First user email: " + jsonPath.getString("data[0].email"));
-        System.out.println("First user first name: " + res.path("data[0].first_name"));
+        // Removed debug print statements for clean console output
+        // System.out.println("First user email: " + jsonPath.getString("data[0].email"));
+        // System.out.println("First user first name: " + res.path("data[0].first_name"));
 
 
     }
@@ -80,7 +82,8 @@ public class AutomateGet extends BaseTest {
                 .statusCode(200)
                 .extract()
                 .response().path("data[0].email");
-        System.out.println("First user email: " + email);
+        // Removed debug print statements for clean console output
+        // System.out.println("First user email: " + email);
 
         Assert.assertEquals(email,"michael.lawson@reqres.in");
     }

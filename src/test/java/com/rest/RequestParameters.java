@@ -139,7 +139,8 @@ public class RequestParameters extends BaseTest {
         File outputFile = new File("downloaded_pom.xml"); // Save as downloaded_pom.xml
         try (OutputStream os = new FileOutputStream(outputFile)) {
             os.write(fileBytes);
-            System.out.println("✅ File downloaded successfully: " + outputFile.getAbsolutePath());
+            // Removed debug print statement for clean console output
+            // System.out.println("✅ File downloaded successfully: " + outputFile.getAbsolutePath());
         } finally {
             // Clean up the downloaded file after the test
             if (outputFile.exists()) {
