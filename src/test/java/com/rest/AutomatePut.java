@@ -35,7 +35,6 @@ public class AutomatePut extends BaseTest {
         responseSpec = new ResponseSpecBuilder()
                 .expectStatusCode(200)
                 .expectContentType(ContentType.JSON)
-                .log(LogDetail.ALL)
                 .build();
 
         // DO NOT set global response specification - this was causing the CI failures
@@ -72,7 +71,6 @@ public class AutomatePut extends BaseTest {
                 .when()
                 .put("/api/users/{id}")
                 .then()
-                .log().all()
                 .spec(responseSpec) // Use response spec locally, not globally
                 .body("name", equalTo("morpheus"))
                 .body("job", equalTo("zion resident"))

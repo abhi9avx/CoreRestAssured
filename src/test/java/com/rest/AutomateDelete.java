@@ -41,7 +41,6 @@ public class AutomateDelete extends BaseTest {
                 .when()
                 .delete("/api/users/{id}")
                 .then()
-                .log().all()
                 .assertThat()
                 .statusCode(204) // Expect 204 No Content for successful delete
                 .contentType(""); // Explicitly expect no content type for 204 response
@@ -55,7 +54,6 @@ public class AutomateDelete extends BaseTest {
                 .when()
                 .delete("/api/users/2")
                 .then()
-                .log().all()
                 .assertThat()
                 .statusCode(204) // Expect 204 No Content for successful delete
                 .contentType(""); // Explicitly expect no content type for 204 response

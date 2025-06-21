@@ -42,11 +42,9 @@ public class RequestParameters extends BaseTest {
         given()
                 .spec(requestSpec) // Use inherited requestSpec
                 .queryParam("page", "2") // Adjusted for reqres.in
-                .log().all()
                 .when()
                 .get("/api/users") // Adjusted for reqres.in
                 .then()
-                .log().all()
                 .assertThat()
                 .statusCode(200)
                 .body("page", equalTo(2)); // Validate query param in response
@@ -64,11 +62,9 @@ public class RequestParameters extends BaseTest {
         given()
                 .spec(requestSpec) // Use inherited requestSpec
                 .queryParams(queryParams) // Add all query params from map
-                .log().all()
                 .when()
                 .get("/api/users") // Adjusted for reqres.in
                 .then()
-                .log().all()
                 .assertThat()
                 .statusCode(200)
                 .body("page", equalTo(2))
@@ -83,11 +79,9 @@ public class RequestParameters extends BaseTest {
         given()
                 .spec(requestSpec) // Use inherited requestSpec
                 .pathParam("id", 2) // Replaces {id} in URL
-                .log().all()
                 .when()
                 .get("/api/users/{id}")
                 .then()
-                .log().all()
                 .assertThat()
                 .statusCode(200);
     }
@@ -102,11 +96,9 @@ public class RequestParameters extends BaseTest {
                 .baseUri("https://postman-echo.com") // Use postman-echo.com for this specific test
                 .multiPart("foo1", "bar1")
                 .multiPart("foo2", "bar2")
-                .log().all()
                 .when()
                 .post("/post")
                 .then()
-                .log().all()
                 .assertThat()
                 .statusCode(200)
                 .body("form.foo1", equalTo("bar1"))
@@ -125,11 +117,9 @@ public class RequestParameters extends BaseTest {
         // Send GET request to download file as byte array
         byte[] fileBytes = given()
                 .baseUri(githubBaseUri)
-                .log().uri()
                 .when()
                 .get(filePath)
                 .then()
-                .log().status()
                 .assertThat()
                 .statusCode(200) // Expect 200 OK
                 .extract()
@@ -161,11 +151,9 @@ public class RequestParameters extends BaseTest {
                 )
                 .formParam("foo1", "bar1")
                 .formParam("foo2", "bar2")
-                .log().all()
                 .when()
                 .post("/post")
                 .then()
-                .log().all()
                 .assertThat()
                 .statusCode(200)
                 .body("form.foo1", equalTo("bar1"))

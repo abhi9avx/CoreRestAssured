@@ -30,7 +30,6 @@ public class AutomateGet extends BaseTest {
                 .when()
                 .get("/api/users?page=2")
                 .then()
-                .log().all()
                 .assertThat()
                 .statusCode(200)
                 .body("data[0].email", equalTo("michael.lawson@reqres.in"));
@@ -109,23 +108,9 @@ public class AutomateGet extends BaseTest {
     public void request_response_logging() {
         given()
                 .spec(requestSpec)
-
-                .log().method()
-                .log().uri()
-                .log().headers()
-                .log().params()
-                .log().body()
-
                 .when()
                 .get("/api/users?page=2")
-
                 .then()
-
-                .log().status()
-                .log().body()
-
-                .log().ifError()
-
                 .statusCode(200);
     }
 
@@ -134,7 +119,6 @@ public class AutomateGet extends BaseTest {
         given()
                 .spec(requestSpec)
                 .config(config().logConfig(logConfig().blacklistHeader("x-api-key")))
-                .log().all()
                 .when()
                 .get("/api/users?page=2")
                 .then()

@@ -55,8 +55,7 @@ public class AutomatePost extends BaseTest {
                 .body("name", equalTo("morpheus"))
                 .body("job", equalTo("leader"))
                 .body("id", notNullValue())
-                .body("createdAt", notNullValue())
-                .log().all();
+                .body("createdAt", notNullValue());
     }
 
     /**
@@ -86,8 +85,6 @@ public class AutomatePost extends BaseTest {
 
         assertThat("createdAt should not be null",
                 response.path("createdAt"), notNullValue());
-        
-        response.then().log().all(); // Log response for debugging
     }
 
     /**
@@ -107,7 +104,6 @@ public class AutomatePost extends BaseTest {
                 .when()
                 .post("/api/users")
                 .then()
-                .log().all()
                 .assertThat()
                 .statusCode(201)
                 .body("name", equalTo("Trinity"))
@@ -134,7 +130,6 @@ public class AutomatePost extends BaseTest {
                 .body("name", equalTo("morpheus"))
                 .body("job", equalTo("leader"))
                 .body("id", notNullValue())
-                .body("createdAt", notNullValue())
-                .log().all();
+                .body("createdAt", notNullValue());
     }
 }

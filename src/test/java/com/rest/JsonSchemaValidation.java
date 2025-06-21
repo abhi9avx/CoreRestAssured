@@ -25,11 +25,9 @@ public class JsonSchemaValidation {
     public void validateJsonSchema() {
         given()
                 .baseUri(BASE_URI)
-                .log().uri()
                 .when()
                 .get("/get")
                 .then()
-                .log().ifValidationFails()
                 .assertThat()
                 .statusCode(200)
                 .body(matchesJsonSchemaInClasspath("EchoGet.json")); // Make sure this is under src/test/resources

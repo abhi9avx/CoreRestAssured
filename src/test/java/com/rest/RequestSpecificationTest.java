@@ -28,7 +28,6 @@ public class RequestSpecificationTest extends BaseTest {
                 .when()
                 .get("/api/users?page=2")
                 .then()
-                .log().all()
                 .assertThat()
                 .statusCode(200)
                 .body("page", equalTo(2)); // Corrected for reqres.in user list response
