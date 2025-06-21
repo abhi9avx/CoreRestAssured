@@ -22,14 +22,14 @@ buildNumber.properties
 .mvn/timing.properties
 .mvn/wrapper/maven-wrapper.jar
 
-# Allure
+# Allure - Keep ONLY in target directory
 .allure/
 allure-results/
 allure-report/
 target/allure-results/
 target/allure-report/
 
-# Logs
+# Logs - No logs in root directory
 src/test/resources/logs/
 *.log
 restassured.log
@@ -50,10 +50,14 @@ temp.txt
 
 # Config files with sensitive data
 config.properties
+*.properties
 
 # OS specific files
 .DS_Store
 Thumbs.db
+
+# Documentation clutter
+docs/
 
 # Ignore the following directories
 !**/src/main/**/target/
@@ -91,7 +95,4 @@ build/
 .vscode/
 
 ### Mac OS ###
-.DS_Store
-
-# Ignore the config file with API key
-config.properties 
+.DS_Store 
