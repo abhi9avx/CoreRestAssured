@@ -493,3 +493,44 @@ Made with ❤️ by Abhinav Kumar
 - [TestNG Documentation](https://testng.org/doc/)
 - [Allure Framework Documentation](https://docs.qameta.io/allure/)
 - [Jenkins Documentation](https://www.jenkins.io/doc/)
+
+## CI/CD Pipeline
+
+This project uses GitHub Actions for continuous integration and testing. The workflow is triggered on:
+- Push to main branch
+- Pull requests to main branch
+
+### GitHub Actions Workflow Features:
+- ✅ Java 11 setup with Temurin distribution
+- ✅ Maven caching for faster builds
+- ✅ TestNG test execution
+- ✅ Allure report generation
+- ✅ Test results artifacts upload
+- ✅ Comprehensive error logging
+
+### Running Tests Locally:
+```bash
+# Compile the project
+mvn clean compile test-compile
+
+# Run all tests
+mvn test -Dsurefire.suiteXmlFiles=src/test/resources/testng.xml
+
+# Generate Allure report
+mvn allure:report
+
+# View Allure report
+mvn allure:serve
+```
+
+### Environment Variables:
+- `BASE_URL`: API base URL (defaults to https://reqres.in)
+- `API_KEY`: API key (configured in GitHub Secrets)
+
+### Troubleshooting CI Issues:
+1. Check that all test classes are in the correct packages (`com.reqres.test` and `com.rest`)
+2. Ensure TestNG configuration file exists at `src/test/resources/testng.xml`
+3. Verify Java 11 compatibility of all dependencies
+4. Check GitHub Actions logs for detailed error messages
+
+---
